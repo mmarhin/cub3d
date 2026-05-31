@@ -14,7 +14,7 @@ NAME		= cub3D
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
-INCLUDES	= -I./includes -I./libft
+INCLUDES	= -I./includes -I./libft -I$(MLX_DIR)
 
 # ---------------------------------------------------------------------------- #
 #  Sources                                                                       #
@@ -54,10 +54,10 @@ OBJS		= $(SRCS:.c=.o)
 LIBFT_DIR	= ./libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
-# macOS MLX
-MLX_DIR		= ./mlx
+# miniLibX
+MLX_DIR		?= ./mlx
 MLX			= $(MLX_DIR)/libmlx.a
-MLX_FLAGS	= -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11
 
 # ---------------------------------------------------------------------------- #
 #  Rules                                                                         #

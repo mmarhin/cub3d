@@ -63,7 +63,7 @@ cub3d/
 │   └── invalid_missing_tex.cub
 ├── textures/                ← add .xpm files here
 ├── libft/                   ← copy your libft here
-├── mlx/                     ← copy miniLibX here (macOS version)
+├── mlx/                     ← copy miniLibX here
 ├── Makefile
 ├── README.md
 └── WORK_PLAN.md
@@ -181,11 +181,11 @@ All structs live in `includes/cub3d.h`:
 - [ ] `all` `clean` `fclean` `re` rules
 - [ ] `-Wall -Wextra -Werror` always
 - [ ] No unnecessary relinking (use `.o` dependencies)
-- [ ] Link with `-lm` and MLX flags (`-framework OpenGL -framework AppKit` on macOS)
+- [ ] Link with `-lm` and platform MLX flags
 
 ### libft + miniLibX
 - [ ] Drop your `libft/` directory into the project root
-- [ ] Drop the macOS `mlx/` directory into the project root
+- [ ] Drop the miniLibX `mlx/` directory into the project root
 - [ ] Both are built by the Makefile automatically
 
 ### Test maps (already created in `maps/`)
