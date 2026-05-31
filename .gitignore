@@ -1,0 +1,12 @@
+# Build artifacts
+*.o
+*.a
+cub3D
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*~

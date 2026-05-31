@@ -1,206 +1,252 @@
-# cub3D Work Plan
+# cub3D – Work Plan
 
 ## Goal
 
-This document defines how Mario and Manuel will split the work for `cub3D`. The goal is to keep the workload balanced while matching each person's strengths: Mario will focus mainly on the mathematical and rendering side, while Manuel will focus mainly on parsing and validation.
+This document defines how Mario and Manuel will split the work for `cub3D`.
+The subject requires a realistic 3-D first-person view of a maze using
+ray-casting principles and the miniLibX graphics library.
 
-Both parts are equally important. A correct parser is required before rendering can start safely, and a correct raycaster is required for the final visual result.
+---
 
-## Mario Responsibilities
+## Subject constraints (always keep in mind)
 
-Mario will focus on the math-heavy and graphics-heavy parts of the project.
+| Rule | Detail |
+|---|---|
+| Language | C, 42 Norm |
+| Compilation | `cc -Wall -Wextra -Werror` |
+| Library | miniLibX only (no other graphics) |
+| Argument | exactly one `.cub` scene file |
+| Textures | NO / SO / WE / EA – one XPM per wall side |
+| Colors | F (floor) and C (ceiling) as `R,G,B` in `[0,255]` |
+| Map chars | `0` `1` `N` `S` `E` `W` and spaces only |
+| Map rule | must be **closed** (surrounded by `1` walls) |
+| Player | exactly **one** start position (N/S/E/W) |
+| Controls | WASD move · arrows rotate · ESC exits · red-cross exits |
+| Errors | `Error\n` + explicit message on any misconfiguration |
+| Memory | all allocations freed on exit or error |
 
-### Raycasting
+---
 
-- Define the player position, direction vector, and camera plane.
-- Implement the ray loop for each vertical stripe of the screen.
-- Calculate ray direction for every column.
-- Calculate `delta_dist_x` and `delta_dist_y`.
-- Calculate `side_dist_x` and `side_dist_y`.
-- Implement the DDA algorithm to detect wall hits.
-- Calculate perpendicular wall distance to avoid fisheye distortion.
-- Calculate wall height, draw start, and draw end.
+## Project structure
 
-### Rendering
+```
+cub3d/
+├── includes/
+│   └── cub3d.h              ← all structs + all prototypes
+├── src/
+│   ├── main.c
+│   ├── parsing/             ← Manuel
+│   │   ├── parse_args.c
+│   │   ├── read_file.c
+│   │   ├── parse_textures.c
+│   │   ├── parse_colors.c
+│   │   ├── parse_map.c
+│   │   └── validate_map.c
+│   ├── rendering/           ← Mario
+│   │   ├── init_mlx.c
+│   │   ├── load_textures.c
+│   │   ├── raycasting.c
+│   │   ├── draw.c
+│   │   └── texture_utils.c
+│   ├── events/              ← Mario
+│   │   ├── hooks.c
+│   │   └── move.c
+│   ├── cleanup/             ← shared
+│   │   └── cleanup.c
+│   └── utils/               ← Manuel
+│       └── error.c
+├── maps/
+│   ├── valid_simple.cub
+│   ├── valid_complex.cub
+│   ├── invalid_open.cub
+│   ├── invalid_color.cub
+│   └── invalid_missing_tex.cub
+├── textures/                ← add .xpm files here
+├── libft/                   ← copy your libft here
+├── mlx/                     ← copy miniLibX here (macOS version)
+├── Makefile
+├── README.md
+└── WORK_PLAN.md
+```
 
-- Draw ceiling and floor colors.
-- Draw wall slices based on raycasting results.
-- Select the correct texture depending on wall direction: North, South, East, or West.
-- Calculate texture X and Y coordinates.
-- Put pixels into the MLX image buffer efficiently.
-- Render the final image to the window.
+---
 
-### Movement and Camera
+## Mario – Rendering, Raycasting, Events
 
-- Implement player rotation with the left and right arrow keys.
-- Implement movement with `W`, `A`, `S`, and `D`.
-- Add wall collision handling for movement.
-- Tune movement speed and rotation speed.
-- Make movement feel smooth and predictable.
+### Milestone 1 · MLX + window
+**File:** `src/rendering/init_mlx.c`
+- [ ] `mlx_init()` + `mlx_new_window()`
+- [ ] Create image buffer with `mlx_new_image` + `mlx_get_data_addr`
+- [ ] Verify window opens, image renders, and window can be minimised/switched
 
-### Math Testing
+### Milestone 2 · Static render (floor + ceiling)
+**File:** `src/rendering/draw.c`
+- [ ] `draw_background` – fill top half with ceiling color, bottom with floor color
+- [ ] Use `t_color` values from Manuel's parser (RGB → `(r<<16)|(g<<8)|b`)
+- [ ] `render_frame` → `draw_background` + `mlx_put_image_to_window`
 
-- Test the raycaster with small maps.
-- Check edge cases when rays hit horizontal or vertical walls.
-- Verify that the player orientation matches `N`, `S`, `E`, and `W`.
-- Check that texture orientation is correct on all wall sides.
+### Milestone 3 · Raycasting – DDA
+**File:** `src/rendering/raycasting.c`
+- [ ] `camera_x` in `[-1, 1]` per screen column
+- [ ] `ray_dir_x/y` from `dir + plane * camera_x`
+- [ ] `delta_dist` (avoid div-by-zero)
+- [ ] `step` and initial `side_dist`
+- [ ] DDA loop until `map[map_x][map_y] == '1'`
+- [ ] `perp_wall_dist` (correct fisheye)
+- [ ] `line_height`, `draw_start`, `draw_end`
 
-## Manuel Responsibilities
+### Milestone 4 · Textured walls
+**Files:** `src/rendering/draw.c` · `src/rendering/texture_utils.c`
+- [ ] Select texture by wall side: `side==1 && ray_dir_y<0` → NO, etc.
+- [ ] `calc_tex_x` – fractional wall hit → column in XPM
+- [ ] `draw_wall_slice` – sample texture per pixel in `[draw_start, draw_end]`
+- [ ] `get_tex_color` – `addr + y*line_len + x*(bpp/8)` cast to int
 
-Manuel will focus on parsing, validation, and preparing clean data for the rest of the program.
+### Milestone 5 · Load XPM textures
+**File:** `src/rendering/load_textures.c`
+- [ ] `mlx_xpm_file_to_image` for NO / SO / WE / EA
+- [ ] Store `width`, `height`, `addr`, `bpp`, `line_len`, `endian` in `t_tex`
+- [ ] Return error if any texture path is missing or file not found
 
-### File Reading
+### Milestone 6 · Movement + rotation + collision
+**Files:** `src/events/hooks.c` · `src/events/move.c`
+- [ ] `handle_keydown` – dispatch ESC / arrows / WASD
+- [ ] `handle_close` – cleanup + `exit(0)` for the red cross event (event 17)
+- [ ] `move_player` – W/S along `dir`, A/D perpendicular; check `map[new_y][new_x] != '1'`
+- [ ] `rotate_player` – 2-D rotation matrix on `dir` and `plane`
 
-- Validate that the program receives exactly one argument.
-- Validate that the argument has the `.cub` extension.
-- Open and read the `.cub` file safely.
-- Store the file content in a structure that can be parsed later.
-- Handle empty files and read errors cleanly.
+### Player initialisation (shared with Manuel)
+- [ ] After `parse_map` sets `player.start_dir` + `pos_x/pos_y`, Mario's code
+      sets `dir_x/y` and `plane_x/y` based on `start_dir` (N/S/E/W)
 
-### Configuration Parsing
+---
 
-- Parse texture identifiers: `NO`, `SO`, `WE`, and `EA`.
-- Validate texture paths.
-- Detect missing texture paths.
-- Detect duplicate texture identifiers.
-- Parse floor color with identifier `F`.
-- Parse ceiling color with identifier `C`.
-- Validate RGB format: `R,G,B`.
-- Validate RGB range: `0` to `255`.
-- Reject invalid characters or extra data in configuration lines.
+## Manuel – Parsing, Validation, Errors
 
-### Map Parsing
+### Milestone 1 · Arguments + file reading
+**Files:** `src/parsing/parse_args.c` · `src/parsing/read_file.c`
+- [ ] `check_args` – exactly 2 args, extension must be `.cub`
+- [ ] `read_cub_file` – open, `get_next_line` loop, NULL-terminated array
+- [ ] Handle empty file (`ERR_EMPTY`) and `open` failure (`ERR_OPEN`)
 
-- Detect where the map starts.
-- Ensure the map is the last part of the file.
-- Preserve spaces inside the map.
-- Validate allowed map characters: `0`, `1`, spaces, `N`, `S`, `E`, and `W`.
-- Validate that there is exactly one player start position.
-- Store the player's initial position and orientation.
-- Convert the map into a format usable by the raycaster.
+### Milestone 2 · Texture paths
+**File:** `src/parsing/parse_textures.c`
+- [ ] Scan header lines for `NO` / `SO` / `WE` / `EA`
+- [ ] Extract path after identifier + spaces
+- [ ] Reject duplicates; verify all 4 are set at the end
+- [ ] `ft_strdup` path into `tex->no_path / so_path / we_path / ea_path`
 
-### Map Validation
+### Milestone 3 · Colors
+**File:** `src/parsing/parse_colors.c`
+- [ ] Parse `F R,G,B` and `C R,G,B` (identifiers can be in any order)
+- [ ] Split by comma, `ft_atoi` each component
+- [ ] Validate exactly 3 components and each in `[0, 255]`
+- [ ] Reject duplicates; verify both F and C are set
 
-- Validate that the map is closed by walls.
-- Handle irregular map shapes.
-- Treat spaces correctly as outside/void areas.
-- Detect open borders next to `0` or player position.
-- Return clear errors for invalid maps.
+### Milestone 4 · Map parsing
+**File:** `src/parsing/parse_map.c`
+- [ ] Detect map start (first line of `1`s / spaces after header)
+- [ ] Subject rule: map is **always last** in the file
+- [ ] Copy lines preserving spaces (`ft_strdup` each row)
+- [ ] Compute `map->rows` and `map->cols` (pad short rows with spaces)
+- [ ] Valid chars: `0` `1` ` ` `N` `S` `E` `W` – reject anything else
+- [ ] Find player char → `player->start_dir` + `pos_x` + `pos_y`
+- [ ] Exactly one player required (`ERR_PLAYER`)
+- [ ] Replace player char with `'0'` on the grid
 
-### Error Handling and Cleanup
+### Milestone 5 · Map closure validation
+**File:** `src/parsing/validate_map.c`
+- [ ] Flood-fill (BFS/DFS) from map borders
+- [ ] If any reachable `0` or player cell is found → `ERR_MAP_CLOSED`
+- [ ] Treat spaces as void/outside (reachable from border = open map)
+- [ ] Free working copy after validation
 
-- Print `Error\n` followed by an explicit error message.
-- Free all memory allocated during parsing when an error happens.
-- Prepare cleanup functions for parsed data.
-- Make parser failures predictable and easy to debug.
+### Milestone 6 · Error output
+**File:** `src/utils/error.c`
+- [ ] `print_error(msg)` – writes `"Error\n"` + msg to fd 2, returns 1
+- [ ] `exit_error(game, msg)` – print + cleanup + `exit(1)`
 
-## Shared Responsibilities
+---
 
-Some parts should be designed and reviewed together because both sides depend on them.
+## Shared tasks
 
-### Project Architecture
+### Structs (agree before coding)
+All structs live in `includes/cub3d.h`:
+- `t_color` · `t_img` · `t_tex` · `t_textures`
+- `t_map` · `t_player` · `t_ray` · `t_mlx` · `t_game`
+> **Discuss** before adding fields – both sides depend on these.
 
-- Agree on the main structs before implementing too much code.
-- Define structs for game state, map, player, textures, colors, and MLX context.
-- Agree on which module owns each allocation.
-- Keep headers clear and not overloaded.
+### Makefile
+**File:** `Makefile`
+- [ ] `all` `clean` `fclean` `re` rules
+- [ ] `-Wall -Wextra -Werror` always
+- [ ] No unnecessary relinking (use `.o` dependencies)
+- [ ] Link with `-lm` and MLX flags (`-framework OpenGL -framework AppKit` on macOS)
 
-### Makefile and Norm
+### libft + miniLibX
+- [ ] Drop your `libft/` directory into the project root
+- [ ] Drop the macOS `mlx/` directory into the project root
+- [ ] Both are built by the Makefile automatically
 
-- Create and maintain the `Makefile`.
-- Ensure the project compiles with `-Wall`, `-Wextra`, and `-Werror`.
-- Avoid unnecessary relinking.
-- Run Norm checks regularly.
-- Keep functions short and readable.
+### Test maps (already created in `maps/`)
+| File | Purpose |
+|---|---|
+| `valid_simple.cub` | Basic smoke test |
+| `valid_complex.cub` | Complex irregular map from subject |
+| `invalid_open.cub` | Must print `Error\n` – map not closed |
+| `invalid_color.cub` | Must print `Error\n` – RGB out of range |
+| `invalid_missing_tex.cub` | Must print `Error\n` – EA missing |
 
-### miniLibX Setup
-
-- Initialize MLX and the window.
-- Load XPM textures.
-- Create and manage image buffers.
-- Handle keyboard events.
-- Handle window close events.
-- Destroy images and the window on exit.
-
-### Testing
-
-- Create valid maps for normal testing.
-- Create invalid maps for parser testing.
-- Test missing textures, bad colors, invalid characters, and open maps.
-- Test player movement near walls.
-- Test all player starting orientations.
-- Test clean exit with `ESC` and the window close button.
-- Check memory leaks.
-
-### Code Review
-
-- Mario reviews Manuel's parser from the point of view of what the renderer needs.
-- Manuel reviews Mario's rendering code from the point of view of data assumptions and edge cases.
-- No major feature should be merged into `main` without being compiled and tested.
-
-## Balanced Milestones
-
-### Milestone 1: Base Setup
-
-- Mario: create initial MLX window and image buffer.
-- Manuel: create file reading and basic `.cub` argument validation.
-- Shared: define main structs and Makefile.
-
-### Milestone 2: Parser and Static Render
-
-- Mario: draw floor, ceiling, and a simple placeholder wall render.
-- Manuel: parse textures, colors, and map into final structs.
-- Shared: connect parser output with renderer input.
-
-### Milestone 3: Raycasting and Map Validation
-
-- Mario: implement DDA raycasting and wall projection.
-- Manuel: complete map closure validation and player start validation.
-- Shared: test with multiple valid and invalid maps.
-
-### Milestone 4: Textures and Controls
-
-- Mario: apply wall textures and implement movement/rotation.
-- Manuel: strengthen parser errors and cleanup paths.
-- Shared: test texture directions, controls, and clean exits.
-
-### Milestone 5: Polish and Defense Preparation
-
-- Mario: tune rendering, movement, and collision behavior.
-- Manuel: finalize error messages and parser edge cases.
-- Shared: run Norm, leak checks, defense tests, and explain each module to each other.
+---
 
 ## Branches
 
-- `main`: stable branch with reviewed code only.
-- `mario`: Mario's branch for raycasting, rendering, movement, and math.
-- `manuel`: Manuel's branch for parsing, validation, file handling, and errors.
-
-Recommended workflow:
-
-```sh
-git switch mario
-# Mario works on rendering/math
-```
+| Branch | Owner | Content |
+|---|---|---|
+| `main` | shared | reviewed + tested code only |
+| `mario` | Mario | rendering, raycasting, events |
+| `manuel` | Manuel | parsing, validation, errors |
 
 ```sh
-git switch manuel
-# Manuel works on parsing/validation
+git switch mario   # Mario works here
+git switch manuel  # Manuel works here
+# merge into main only after both compile + test
 ```
 
-Before merging into `main`, both should compile, test, and review the change.
+---
 
-## Final Responsibility Split
+## Milestones order
 
-| Area | Main Owner | Reviewer |
-| --- | --- | --- |
-| Raycasting | Mario | Manuel |
-| Rendering | Mario | Manuel |
-| Movement and rotation | Mario | Manuel |
-| File parsing | Manuel | Mario |
-| Map validation | Manuel | Mario |
-| Error handling | Manuel | Mario |
-| Makefile | Shared | Shared |
-| MLX setup | Shared | Shared |
-| Testing | Shared | Shared |
-| Defense preparation | Shared | Shared |
+```
+M1: Arguments + file reading (Manuel) + MLX window (Mario)
+M2: Color parsing (Manuel) + floor/ceiling render (Mario)
+M3: Texture + map parsing (Manuel) + DDA raycasting (Mario)
+M4: Map validation (Manuel) + textured walls (Mario)
+M5: Error polish (Manuel) + movement/collision (Mario)
+M6: Norm + leaks + defence tests (shared)
+```
+
+---
+
+## Responsibility table
+
+| Area | Main | Reviewer |
+|---|---|---|
+| Argument validation | Manuel | Mario |
+| File reading | Manuel | Mario |
+| Texture parsing (NO/SO/WE/EA) | Manuel | Mario |
+| Color parsing (F/C) | Manuel | Mario |
+| Map parsing | Manuel | Mario |
+| Map closure validation | Manuel | Mario |
+| Error output (`Error\n`) | Manuel | Mario |
+| MLX init + image buffer | Mario | Manuel |
+| Load XPM textures | Mario | Manuel |
+| Raycasting / DDA | Mario | Manuel |
+| Draw background | Mario | Manuel |
+| Draw textured walls | Mario | Manuel |
+| Movement + rotation | Mario | Manuel |
+| Event hooks (ESC / close) | Mario | Manuel |
+| Cleanup / free | shared | shared |
+| Makefile | shared | shared |
+| Test maps | shared | shared |
+| Norm + leaks | shared | shared |
