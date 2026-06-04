@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:00 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/04 10:48:15 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,88 @@
 **
 ** Returns 0 on success, 1 on any misconfiguration.
 */
-int	parse_map(t_map *map, t_player *player, char **lines)
+ 
+
+static void	set_player_pos(t_player *player)
 {
-	/* TODO (Manuel):
-	**   1. Find the first line that looks like a map line
-	**      (starts with '1' or ' ', after all header elements are done).
-	**   2. Copy those lines into map->grid (preserve spaces, strip '\n').
-	**   3. Compute map->rows and map->cols (pad shorter rows with spaces).
-	**   4. Validate every character: only '0','1',' ','N','S','E','W' allowed.
-	**   5. Find and count player chars (N/S/E/W).
-	**      - Exactly 1 required → store in player->start_dir + pos_x/pos_y.
-	**      - Replace it with '0' on the grid after storing.
-	**   6. Return 1 + print_error(...) on any violation.
-	*/
-	(void)map;
-	(void)player;
-	(void)lines;
-	return (0);
+    if (player->start_dir == 'N')
+    {
+        player->dir_x = 0;
+        player->dir_y = -1;
+        player->plane_x = 0.66;
+        player->plane_y = 0;
+    }
+    else if (player->start_dir == 'S')
+    {
+        player->dir_x = 0;
+        player->dir_y = 1;
+        player->plane_x = -0.66;
+        player->plane_y = 0;
+    }
+    else if (player->start_dir == 'E')
+    {
+        player->dir_x = 1;
+        player->dir_y = 0;
+        player->plane_x = 0;
+        player->plane_y = 0.66;
+    }
+    else if (player->start_dir == 'W')
+    {
+        player->dir_x = -1;
+        player->dir_y = 0;
+        player->plane_x = 0;
+        player->plane_y = -0.66;
+    }
+}
+
+static int check_options(char option)
+{
+	if (option == 'N')
+		return (0);
+	else if (option == 'S')
+		return (0);
+	else if (option == 'E')
+		return (0);
+	else if (option == 'W')
+		return (0);
+	return (1);
+}
+
+int parse_map(t_map *map, t_player *player, char **lines)
+{
+    int i;
+    int j;
+    int pos_confirm;
+
+    pos_confirm = 0;
+    i = 0;
+    while (lines[i])
+    {
+        j = 0;
+        while (lines[i][j])
+        {
+            if (lines[i][j] == ' ')
+                j++;
+            else if (lines[i][j] == '1' || lines[i][j] == '0')
+                j++;
+            else if (check_options(lines[i][j]) == 0)
+            {
+                if (pos_confirm == 1)
+                    return (1);
+                pos_confirm = 1;
+                player->start_dir = lines[i][j];
+                player->pos_x = (double)j + 0.5;
+                player->pos_y = (double)i + 0.5;
+                lines[i][j] = '0';
+                j++;
+            }
+            else
+                return (1);
+        }
+        i++;
+    }
+    if (pos_confirm == 0)
+        return (1);
+    set_player_pos(player);
+    return (0);
 }

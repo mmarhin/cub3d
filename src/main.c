@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/02 14:07:26 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/04 10:41:04 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 		|| parse_map(&game.map, &game.player, lines))
 		return (free_lines(lines), cleanup_game(&game), 1);
 	free_lines(lines);
-	if (validate_map(&game.map))
+	if (validate_map(&game.map, &game.player))
 		return (cleanup_game(&game), 1);
 	if (init_mlx(&game))
 		return (cleanup_game(&game), 1);
