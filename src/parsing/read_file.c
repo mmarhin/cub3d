@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:00 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/02 11:36:17 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,31 @@ char	**read_cub_file(char *path)
 	**   4. Close fd and return the array
 	**   5. Return NULL + print_error(ERR_EMPTY) if file has no lines
 	*/
-	(void)path;
-	return (NULL);
+	int	fd;
+    char	*line;
+    char    **map;
+    int	count;
+	
+	count = 0;
+	map = NULL;
+	if (!path)
+		return (NULL);
+	fd = open(path, 0_RDONLY);
+	if (fd == -1)
+		return (NULL);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		map = realloc(map, sizeof(char *) * (count + 2));
+		if (!map)
+			return (NULL);
+		map[count] = strdup(line);
+		map[count++];
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	if (!map)
+		return (print_error(ERR_EMPTY), NULL);
+	return (map);
 }
