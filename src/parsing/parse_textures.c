@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/02 11:34:38 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 13:39:08 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,15 @@
 ** Returns 0 on success, 1 on any misconfiguration.
 */
 
-static void	save_path(char *path, t_textures *tex)
+static void	save_path(char *path, t_textures *tex, char pos)
 {
-	if (!path)
-		return (1);
-	if (lines[i][j] == 'N')
+	if (pos == 'N')
 		tex->no_path = path;
-	else if (lines[i][j] == 'S')
+	else if (pos == 'S')
 		tex->so_path = path;
-	else if (lines[i][j] == 'W')
+	else if (pos == 'W')
 		tex->we_path = path;
-	else if (lines[i][j] == 'E')
+	else if (pos == 'E')
 		tex->ea_path = path;
 }
 
@@ -55,7 +53,7 @@ static char	*extract_path(char *line)
 	char	*path;
 
 	if (!line)
-		return (print_error(ERR_TEXT), NULL);
+		return (print_error(ERR_TEX), NULL);
 	start = 0;
 	while (line[start] == ' ' || line[start] == '\t')
 		start++;
@@ -63,7 +61,7 @@ static char	*extract_path(char *line)
 			|| (line[start] == 'S' && line[start + 1] == 'O')
 			|| (line[start] == 'W' && line[start + 1] == 'E')
 			|| (line[start] == 'E' && line[start + 1] == 'A')))
-		return (print_error(ERR_TEXT), NULL);
+		return (print_error(ERR_TEX), NULL);
 	start += 2;
 	while (line[start] == ' ' || line[start] == '\t')
 		start++;
@@ -72,10 +70,10 @@ static char	*extract_path(char *line)
 		&& line[start + len] != '\t' && line[start + len] != '\n')
 		len++;
 	if (len == 0)
-		return (print_error(ERR_TEXT), NULL);
+		return (print_error(ERR_TEX), NULL);
 	path = ft_substr(line, start, len);
 	if (!path)
-		return (print_error(ERR_TEXT), NULL);
+		return (print_error(ERR_TEX), NULL);
 	return (path);
 }
 
@@ -115,7 +113,7 @@ int	parse_textures(t_textures *tex, char **lines)
 	char	*path;
 
 	if (!tex || !lines)
-		return (print_error(ERR_TEXT));
+		return (print_error(ERR_TEX));
 	i = 0;
 	count_tex = 0;
 	while (lines[i])
@@ -126,15 +124,15 @@ int	parse_textures(t_textures *tex, char **lines)
 		if (cardinate_exists(lines[i] + j))
 		{
 			if (check_if_tex_duplicated(lines, i, j) == 1)
-				return (print_error(ERR_TEXT));
+				return (print_error(ERR_TEX));
 			path = extract_path(lines[i]);
-			save_path(path, tex);
+			save_path(path, tex, lines[i][j]);
 			count_tex++;
 		}
 		i++;
 	}
 	if (count_tex != 4 || !tex->no_path || !tex->so_path
 		|| !tex->we_path || !tex->ea_path)
-		return (print_error(ERR_TEXT));
+		return (print_error(ERR_TEX));
 	return (0);
 }

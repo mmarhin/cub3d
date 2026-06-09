@@ -3,19 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+         #
+#    By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#              #
-#    Updated: 2026/05/26 12:00:00 by mamarin-         ###   ########.fr        #
+#    Updated: 2026/06/09 14:49:03 by mruiz-ur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= cub3D
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-INCLUDES	= -I./includes -I./libft -I$(MLX_DIR)
-
+CFLAGS		= -Wall -Wextra -Werror -g
+INCLUDES 	= -I./includes -I./libs/Libft -I./libs/MLX42/include
 # ---------------------------------------------------------------------------- #
 #  Sources                                                                       #
 # ---------------------------------------------------------------------------- #
@@ -51,19 +50,19 @@ OBJS		= $(SRCS:.c=.o)
 #  Libraries                                                                     #
 # ---------------------------------------------------------------------------- #
 
-LIBFT_DIR	= ./libft
+LIBFT_DIR	= ./libs/Libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
-# miniLibX
-MLX_DIR		?= ./mlx
-MLX			= $(MLX_DIR)/libmlx.a
-MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11
+# MLX42
+MLX_DIR		= ./libs/MLX42
+MLX         = $(MLX_DIR)/build/libmlx42.a
+MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 # ---------------------------------------------------------------------------- #
 #  Rules                                                                         #
 # ---------------------------------------------------------------------------- #
 
-all: $(NAME)
+all: libmlx $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -lm -o $(NAME)
@@ -75,11 +74,15 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(MLX):
-	$(MAKE) -C $(MLX_DIR)
+	cmake $(MLX_DIR) -B $(MLX_DIR)/build && make -C $(MLX_DIR)/build -j4
 
+
+libmlx:
+	cmake $(MLX_DIR) -B $(MLX_DIR)/build && make -C $(MLX_DIR)/build -j4
+	
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(MLX_DIR) clean
+	rm -rf $(MLX_DIR)/build
 	rm -f $(OBJS)
 
 fclean: clean

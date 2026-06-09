@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:00 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:34:26 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <math.h>
 # include <fcntl.h>
-# include "mlx.h"
-# include "../libft/libft.h"
+# include "../Libft/libft.h"
+# include "MLX42/MLX42.h"
 
 /* -- Window ---------------------------------------------------------------- */
 # define WIN_W		1280
@@ -193,10 +193,10 @@ int		parse_textures(t_textures *tex, char **lines);
 int		parse_colors(t_color *floor, t_color *ceiling, char **lines);
 
 /* src/parsing/parse_map.c */
-int		parse_map(t_map *map, t_player *player, char **lines);
+int		parse_map(t_player *player, char **lines);
 
 /* src/parsing/validate_map.c */
-int		validate_map(t_map *map);
+int		validate_map(t_map *map, t_player *player);
 
 /* --- Rendering (Mario) --- */
 /* src/rendering/init_mlx.c */
@@ -219,8 +219,12 @@ void	calc_tex_x(t_game *game, t_ray *ray);
 
 /* --- Events (Mario) --- */
 /* src/events/hooks.c */
-int		handle_keydown(int keycode, t_game *game);
-int		handle_close(t_game *game);
+
+// int handle_keydown(int keycode, void *param);
+
+void 	handle_keydown(mlx_key_data_t keydata, void *param);
+void 	handle_close(void *param);
+// int		handle_close(t_game *game);
 
 /* src/events/move.c */
 void	move_player(t_game *game, int keycode);
@@ -229,6 +233,7 @@ void	rotate_player(t_game *game, int keycode);
 /* --- Cleanup (shared) --- */
 /* src/cleanup/cleanup.c */
 void	free_map(t_map *map);
+void	free_copy_map(char **copy);
 void	free_textures(t_game *game);
 void	free_lines(char **lines);
 void	cleanup_game(t_game *game);

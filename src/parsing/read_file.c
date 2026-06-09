@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/02 11:36:17 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 13:31:55 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,19 @@ char	**read_cub_file(char *path)
 	map = NULL;
 	if (!path)
 		return (NULL);
-	fd = open(path, 0_RDONLY);
+	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
-	line = get_next_line(fd);
+	line = ft_get_next_line(fd);
 	while (line != NULL)
 	{
 		map = realloc(map, sizeof(char *) * (count + 2));
 		if (!map)
 			return (NULL);
 		map[count] = strdup(line);
-		map[count++];
+		count++;
 		free(line);
-		line = get_next_line(fd);
+		line = ft_get_next_line(fd);
 	}
 	close(fd);
 	if (!map)

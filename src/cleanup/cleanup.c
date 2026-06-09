@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:00 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:21:15 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ void	free_lines(char **lines)
 	free(lines);
 }
 
-/*
-** free_map – frees the 2D map grid.
-*/
 void	free_map(t_map *map)
 {
 	int	i;
@@ -43,6 +40,21 @@ void	free_map(t_map *map)
 	map->grid = NULL;
 }
 
+void	free_copy_map(char **copy)
+{
+	int i;
+
+	i = 0;
+	if (!copy)
+		return ;
+	while (copy[i])
+	{
+		free(copy[i]);
+		i++;
+	}
+	free(copy);
+}
+
 /*
 ** free_textures – destroys MLX images for all 4 loaded textures.
 */
@@ -50,17 +62,18 @@ void	free_textures(t_game *game)
 {
 	void	*mlx;
 
+	//REVISAR IMPLEMENTACION MLX42 EN FUNCION MLX_DELETE_IMAGE
 	mlx = game->mlx.mlx;
 	if (!mlx)
 		return ;
 	if (game->tex.no.img)
-		mlx_destroy_image(mlx, game->tex.no.img);
+		mlx_delete_image(mlx, game->tex.no.img);
 	if (game->tex.so.img)
-		mlx_destroy_image(mlx, game->tex.so.img);
+		mlx_delete_image(mlx, game->tex.so.img);
 	if (game->tex.we.img)
-		mlx_destroy_image(mlx, game->tex.we.img);
+		mlx_delete_image(mlx, game->tex.we.img);
 	if (game->tex.ea.img)
-		mlx_destroy_image(mlx, game->tex.ea.img);
+		mlx_delete_image(mlx, game->tex.ea.img);
 	free(game->tex.no_path);
 	free(game->tex.so_path);
 	free(game->tex.we_path);
@@ -78,10 +91,7 @@ void	cleanup_game(t_game *game)
 	free_textures(game);
 	free_map(&game->map);
 	if (game->mlx.img.img)
-		mlx_destroy_image(game->mlx.mlx, game->mlx.img.img);
-	if (game->mlx.win)
-		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
+		mlx_delete_image(game->mlx.mlx, game->mlx.img.img);
 	if (game->mlx.mlx)
-		mlx_destroy_display(game->mlx.mlx);
-	free(game->mlx.mlx);
+		mlx_terminate(game->mlx.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/02 14:34:27 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 13:39:16 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 	int		i;
 	int		j;
 	int		id;
-	int		error;
 	char	*content;
 
 	floor->r = -1;

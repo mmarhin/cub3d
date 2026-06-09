@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/04 10:48:15 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 13:39:41 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int check_options(char option)
 	return (1);
 }
 
-int parse_map(t_map *map, t_player *player, char **lines)
+int parse_map(t_player *player, char **lines)
 {
     int i;
     int j;

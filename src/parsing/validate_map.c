@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/04 10:46:55 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:07:33 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,30 @@
 **
 ** Returns 0 if valid, 1 + Error\n if the map is not properly closed.
 */
+
+char **copy_map(t_map *map)
+{
+    int i;
+    char **copy;
+    
+    i = 0;
+    copy = NULL;
+    while (map->grid[i])
+        i++;
+    copy = malloc(sizeof(t_map) * (i + 1));
+    if (!copy)
+        return (NULL);
+    i = 0;
+    while (map->grid[i])
+    {
+        copy[i] = ft_strdup(map->grid[i]);
+        if (!copy[i])
+            return (NULL);
+        i++;
+    }
+    copy[i] = NULL;
+    return (copy);
+}
 
 static int	flood_fill(char **map, int x, int y, int rows, int cols)
 {
@@ -45,46 +69,61 @@ static int	flood_fill(char **map, int x, int y, int rows, int cols)
     return (0);
 }
     
+static int	check_visited(char **copy, t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->rows)
+	{
+		j = 0;
+		while (j < map->cols)
+		{
+			if (copy[i][j] == 'V')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+static void	flood_fill_borders(char **copy, t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->rows)
+	{
+		j = 0;
+		while (j < map->cols)
+		{
+			if (i == 0 || i == map->rows - 1
+				|| j == 0 || j == map->cols - 1)
+				if (copy[i][j] != '1')
+					flood_fill(copy, j, i, map->rows, map->cols);
+			j++;
+		}
+		i++;
+	}
+}
 
 int	validate_map(t_map *map, t_player *player)
 {
-	/* TODO (Manuel):
-	**   1. Make a working copy of map->grid.
-	**   2. Run a flood-fill (BFS or DFS) from every edge cell that
-	**      is '0', 'N', 'S', 'E', 'W', or ' '.
-	**   3. If the fill can reach a walkable cell without crossing a '1',
-	**      the map is open → return 1 + print_error(ERR_MAP_CLOSED).
-	**   4. Free the working copy and return 0 on success.
-	*/
+	char	**copy;
 
-	char **copy;
-    int  i;
-    int  j;
-
-    copy = copy_map(map);
-    if (!copy)
-        return (1);
-    i = 0;
-    while (i < map->rows)
-    {
-        j = 0;
-        while (j < map->cols)
-        {
-            if (i == 0 || i == map->rows - 1
-                || j == 0 || j == map->cols - 1)
-            {
-                if (copy[i][j] != '1')
-                    flood_fill(copy, j, i, map->rows, map->cols);
-            }
-			if (copy[i][j] == 'V')
-            {
-                free_map(copy);
-                return (print_error(ERR_MAP_CLOSED), 1);
-            }
-            j++;
-        }
-        i++;
-    }
-    free_map(copy);
-    return (0);
+	(void)player;
+	copy = copy_map(map);
+	if (!copy)
+		return (1);
+	flood_fill_borders(copy, map);
+	if (check_visited(copy, map))
+	{
+		free_copy_map(copy);
+		return (print_error(ERR_MAP_CLOSED), 1);
+	}
+	free_copy_map(copy);
+	return (0);
 }

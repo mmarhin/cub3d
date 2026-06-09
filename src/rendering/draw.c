@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:00 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:14:59 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ void	draw_wall_slice(t_game *game, int col, t_ray *ray)
 ** Draws one full frame: background → cast all rays → push image.
 ** Subject: strongly recommends using mlx images for performance.
 */
+
+//REVISAR CAMBIO IMPLEMENTACIÓN FUNCION MLX_IMAGE_TO_WINDOW MLX42
 void	render_frame(t_game *game)
 {
 	draw_background(game);
 	cast_rays(game);
-	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win,
-		game->mlx.img.img, 0, 0);
+	mlx_image_to_window(game->mlx.mlx, game->mlx.img.img,
+		0, 0);
 }
