@@ -6,11 +6,25 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:30:03 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 15:55:07 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 16:17:33 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+static int	is_empty_line(char *line)
+{
+	int	i;
+
+	if (!line)
+		return (1);
+	i = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	if (line[i] == '\0' || line[i] == '\n')
+		return (1);
+	return (0);
+}
 
 int	build_map_grid(char **lines, t_map *map)
 {
@@ -54,14 +68,3 @@ int	build_map_grid(char **lines, t_map *map)
 	return (0);
 }
 
-int	is_empty_line(char *line)
-{
-	int	i;
-
-	if (!line)
-		return (1);
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	return (line[i] == '\0' || line[i] == '\n');
-}

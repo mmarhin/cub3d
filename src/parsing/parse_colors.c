@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 13:39:16 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 16:14:53 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,7 @@ static char	*extract_color_content(char *line)
 }
 
 int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
-{
-	/* TODO (Manuel):
-	**   1. Iterate header lines (before the map).
-	**   2. For lines starting with 'F' or 'C':
-	**      a. Split the R,G,B part by commas.
-	**      b. Convert each part with ft_atoi.
-	**      c. Validate: exactly 3 components, each in [0,255].
-	**      d. Check no duplicates.
-	**   3. Verify both F and C have been set.
-	**   4. Return 1 + print_error(ERR_COLOR) on any failure.
-	*/
-	
+{	
 	int		i;
 	int		j;
 	int		id;
