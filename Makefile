@@ -6,7 +6,7 @@
 #    By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#              #
-#    Updated: 2026/06/09 14:49:03 by mruiz-ur         ###   ########.fr        #
+#    Updated: 2026/06/09 15:58:28 by mruiz-ur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC_EVENTS	= src/events/hooks.c \
 SRC_CLEANUP	= src/cleanup/cleanup.c
 
 SRC_UTILS	= src/utils/error.c
+SRC_UTILS	+= src/utils/parse_utils.c
 
 SRCS		= $(SRC_MAIN) $(SRC_PARSING) $(SRC_RENDER) $(SRC_EVENTS) \
 			  $(SRC_CLEANUP) $(SRC_UTILS)

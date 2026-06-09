@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 14:07:33 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 15:48:34 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ char **copy_map(t_map *map)
     int i;
     char **copy;
     
-    i = 0;
-    copy = NULL;
-    while (map->grid[i])
-        i++;
-    copy = malloc(sizeof(t_map) * (i + 1));
+	i = 0;
+	copy = NULL;
+	while (map->grid[i])
+		i++;
+	copy = malloc(sizeof(char *) * (i + 1));
     if (!copy)
         return (NULL);
     i = 0;
@@ -68,28 +68,8 @@ static int	flood_fill(char **map, int x, int y, int rows, int cols)
         return (1);
     return (0);
 }
-    
-static int	check_visited(char **copy, t_map *map)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	while (i < map->rows)
-	{
-		j = 0;
-		while (j < map->cols)
-		{
-			if (copy[i][j] == 'V')
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
-static void	flood_fill_borders(char **copy, t_map *map)
+static int	flood_fill_borders(char **copy, t_map *map)
 {
 	int	i;
 	int	j;
@@ -103,11 +83,13 @@ static void	flood_fill_borders(char **copy, t_map *map)
 			if (i == 0 || i == map->rows - 1
 				|| j == 0 || j == map->cols - 1)
 				if (copy[i][j] != '1')
-					flood_fill(copy, j, i, map->rows, map->cols);
+					if (flood_fill(copy, j, i, map->rows, map->cols))
+						return (1);
 			j++;
 		}
 		i++;
 	}
+	return (0);
 }
 
 int	validate_map(t_map *map, t_player *player)
@@ -115,11 +97,12 @@ int	validate_map(t_map *map, t_player *player)
 	char	**copy;
 
 	(void)player;
+	if (!map || !map->grid || map->rows <= 0 || map->cols <= 0)
+		return (print_error(ERR_MAP_CLOSED), 1);
 	copy = copy_map(map);
 	if (!copy)
-		return (1);
-	flood_fill_borders(copy, map);
-	if (check_visited(copy, map))
+		return (print_error(ERR_MAP_CLOSED), 1);
+	if (flood_fill_borders(copy, map))
 	{
 		free_copy_map(copy);
 		return (print_error(ERR_MAP_CLOSED), 1);

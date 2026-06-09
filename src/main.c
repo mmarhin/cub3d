@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 14:37:01 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/09 15:57:22 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_textures(&game.tex, lines)
 		|| parse_colors(&game.floor, &game.ceiling, lines)
-		|| parse_map(&game.player, lines))
+		|| build_map_grid(lines, &game.map)
+		|| parse_map(&game.map, &game.player))
 		return (free_lines(lines), cleanup_game(&game), 1);
 	free_lines(lines);
 	if (validate_map(&game.map, &game.player))

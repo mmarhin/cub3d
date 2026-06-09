@@ -49,10 +49,13 @@ char	**read_cub_file(char *path)
 	line = ft_get_next_line(fd);
 	while (line != NULL)
 	{
+		if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = '\0';
 		map = realloc(map, sizeof(char *) * (count + 2));
 		if (!map)
 			return (NULL);
 		map[count] = strdup(line);
+		map[count + 1] = NULL;
 		count++;
 		free(line);
 		line = ft_get_next_line(fd);
