@@ -6,107 +6,57 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 16:31:57 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/12 16:39:20 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/*
-** validate_map
-**
-** Subject: the map must be closed/surrounded by walls.
-**          Spaces count as outside/void – any '0' or player cell
-**          reachable from an open border is an error.
-**
-** Strategy: flood-fill from every border-adjacent '0' or space.
-**           If the fill reaches a '0' (walkable cell), the map is open.
-**
-** Returns 0 if valid, 1 + Error\n if the map is not properly closed.
-*/
 
-char **copy_map(t_map *map)
+static int	is_open_side(char **grid, t_map *map, int y, int x)
 {
-    int i;
-    char **copy;
-    
-	i = 0;
-	copy = NULL;
-	while (map->grid[i])
-		i++;
-	copy = malloc(sizeof(char *) * (i + 1));
-    if (!copy)
-        return (NULL);
-    i = 0;
-    while (map->grid[i])
-    {
-        copy[i] = ft_strdup(map->grid[i]);
-        if (!copy[i])
-            return (NULL);
-        i++;
-    }
-    copy[i] = NULL;
-    return (copy);
+    return (y < 0 || y >= map->rows || x < 0 || x >= map->cols
+		|| grid[y][x] == '\0');
 }
 
-static int	flood_fill(char **map, int x, int y, int rows, int cols)
+static int	cell_is_open(char **grid, t_map *map, int y, int x)
 {
-    if (y < 0 || y >= rows || x < 0 || x >= cols)
-        return (1);                  
-    if (map[y][x] == '1' || map[y][x] == 'V')
-        return (0);                 
-    if (map[y][x] == ' ' || map[y][x] == '\0')
-        return (1);                  
-    map[y][x] = 'V';                 
-    if (flood_fill(map, x + 1, y, rows, cols))
-        return (1);
-    if (flood_fill(map, x - 1, y, rows, cols))
-        return (1);
-    if (flood_fill(map, x, y + 1, rows, cols))
-        return (1);
-    if (flood_fill(map, x, y - 1, rows, cols))
-        return (1);
+    if (grid[y][x] != '0')
+		return (0);
+    if (is_open_side(grid, map, y - 1, x)
+		|| is_open_side(grid, map, y + 1, x)
+		|| is_open_side(grid, map, y, x - 1)
+		|| is_open_side(grid, map, y, x + 1))
+		return (1);
     return (0);
 }
 
-static int	flood_fill_borders(char **copy, t_map *map)
+static int	validate_cells(char **grid, t_map *map)
 {
-	int	i;
-	int	j;
+	int	y;
+	int	x;
 
-	i = 0;
-	while (i < map->rows)
+	y = 0;
+	while (y < map->rows)
 	{
-		j = 0;
-		while (j < map->cols)
+		x = 0;
+		while (x < map->cols)
 		{
-			if (i == 0 || i == map->rows - 1
-				|| j == 0 || j == map->cols - 1)
-				if (copy[i][j] != '1')
-					if (flood_fill(copy, j, i, map->rows, map->cols))
-						return (1);
-			j++;
+			if (cell_is_open(grid, map, y, x))
+				return (1);
+			x++;
 		}
-		i++;
+		y++;
 	}
 	return (0);
 }
 
 int	validate_map(t_map *map, t_player *player)
 {
-	char	**copy;
-
 	(void)player;
 	if (!map || !map->grid || map->rows <= 0 || map->cols <= 0)
 		return (print_error(ERR_MAP_CLOSED), 1);
-	copy = copy_map(map);
-	if (!copy)
+	if (validate_cells(map->grid, map))
 		return (print_error(ERR_MAP_CLOSED), 1);
-	if (flood_fill_borders(copy, map))
-	{
-		free_copy_map(copy);
-		return (print_error(ERR_MAP_CLOSED), 1);
-	}
-	free_copy_map(copy);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 16:34:41 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/12 15:53:08 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 **   - Map must be closed, contain valid chars, exactly one player.
 **   - MLX window: arrow keys rotate, WASD move, ESC and red-cross exit cleanly.
 */
+
+static void game_functions(t_game *game)
+{
+	mlx_key_hook(game->mlx.mlx, handle_keydown, &game);
+	mlx_close_hook(game->mlx.mlx, handle_close, &game);
+	mlx_loop(game->mlx.mlx);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -45,8 +53,6 @@ int	main(int argc, char **argv)
 	if (load_textures(&game))
 		return (cleanup_game(&game), 1);
 	render_frame(&game);
-	mlx_key_hook(game.mlx.mlx, handle_keydown, &game);
-	mlx_close_hook(game.mlx.mlx, handle_close, &game);
-	mlx_loop(game.mlx.mlx);
+	game_functions(&game);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 16:14:53 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/12 14:24:52 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,50 +96,52 @@ static char	*extract_color_content(char *line)
 	return (ft_substr(line, start, len));
 }
 
+static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)
+{
+	floor->r = -1;
+	ceiling->r = -1;
+	*i = 0;
+	*id = 0;
+}
+
+static int check_if_duplicated(char c, t_color *floor, t_color *ceiling, int *id)
+{
+	if (c == 'F')
+	{
+		if (floor->r != -1)
+			return (1);
+		*id = 1;
+	}
+	else
+	{
+		if (ceiling->r != -1)
+			return (1);
+		*id = 2;
+	}
+	return (0);
+}
+
 int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 {	
 	int		i;
-	int		j;
 	int		id;
 	char	*content;
 
-	floor->r = -1;
-	ceiling->r = -1;
-	i = 0;
+	init_vars(floor, ceiling, &i, &id);
 	while (lines[i])
 	{
-		j = 0;
-		if (lines[i][j] == 'F' || lines[i][j] == 'C')
-		{
-			if (lines[i][j] == 'F')
-			{
-				if (floor->r != -1)
-					return (print_error(ERR_COLOR), 1);
-				id = 1;
-			}
-			else
-			{
-				if (ceiling->r != -1)
-					return (print_error(ERR_COLOR), 1);
-				id = 2;
-			}
-			content = extract_color_content(lines[i]);
-			if (!content)
-				return (print_error(ERR_COLOR), 1);
-			if (rgb_split(id, content, ceiling, floor) == 1)
-			{
-				free(content);
-				print_error(ERR_COLOR);
-				return (1);
-			}
-			free(content);
-		}
+		if (lines[i][0] == 'F' || lines[i][0] == 'C')
+        {
+            if (check_if_duplicated(lines[i][0], floor, ceiling, &id)
+                || !(content = extract_color_content(lines[i])))
+                return (print_error(ERR_COLOR), 1);
+            if (rgb_split(id, content, ceiling, floor))
+                return (free(content), print_error(ERR_COLOR), 1);
+            free(content);
+        }
 		i++;
-	}
+	}		
 	if (floor->r == -1 || ceiling->r == -1)
-	{
-		print_error(ERR_COLOR);
-		return (1);
-	}	
+		return (print_error(ERR_COLOR), 1);
 	return (0);
 }
