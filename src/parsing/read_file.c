@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 13:31:55 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/18 14:51:33 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,49 @@
 **
 ** Returns NULL and prints Error\n on failure.
 */
+
+static int init_vars(char *path, int *count, char ***map, int *fd)
+{
+	*count = 0;
+	*map = NULL;
+	if (!path)
+		return (1);
+	*fd = open(path, O_RDONLY);
+	return (0);
+}
+
+static int add_line_to_map(char ***map, char *line, int *count)
+{
+	if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
+		line[ft_strlen(line) - 1] = '\0';
+	*map = realloc(*map, sizeof(char *) * (*count + 2));
+	if (!*map)
+		return (1);
+	(*map)[*count] = ft_strdup(line);
+	(*map)[*count + 1] = NULL;
+	(*count)++;
+	return (0);
+}
+
 char	**read_cub_file(char *path)
 {
-	/* TODO (Manuel):
-	**   1. open(path, O_RDONLY) – return NULL on failure
-	**   2. Read all lines with get_next_line
-	**   3. Store in a dynamically grown array
-	**   4. Close fd and return the array
-	**   5. Return NULL + print_error(ERR_EMPTY) if file has no lines
-	*/
 	int	fd;
     char	*line;
     char    **map;
     int	count;
 	
-	count = 0;
-	map = NULL;
-	if (!path)
+	if (init_vars(path, &count, &map, &fd) == 1)
 		return (NULL);
-	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
 	line = ft_get_next_line(fd);
 	while (line != NULL)
 	{
-		if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		map = realloc(map, sizeof(char *) * (count + 2));
-		if (!map)
+		if (add_line_to_map(&map, line, &count))
+		{
+			free(line);
 			return (NULL);
-		map[count] = strdup(line);
-		map[count + 1] = NULL;
-		count++;
+		}
 		free(line);
 		line = ft_get_next_line(fd);
 	}

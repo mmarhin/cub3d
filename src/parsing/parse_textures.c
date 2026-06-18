@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/09 13:39:08 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/18 14:04:14 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ static int cardinate_exists(char *line)
 		|| (line[0] == 'E' && line[1] == 'A'));
 }
 
+static int tex_line_fail(char *line, int start)
+{
+	return ((line[start] == 'N' && line[start + 1] == 'O')
+			|| (line[start] == 'S' && line[start + 1] == 'O')
+			|| (line[start] == 'W' && line[start + 1] == 'E')
+			|| (line[start] == 'E' && line[start + 1] == 'A'));
+}
 
 static char	*extract_path(char *line)
 {
@@ -57,10 +64,7 @@ static char	*extract_path(char *line)
 	start = 0;
 	while (line[start] == ' ' || line[start] == '\t')
 		start++;
-	if (!((line[start] == 'N' && line[start + 1] == 'O')
-			|| (line[start] == 'S' && line[start + 1] == 'O')
-			|| (line[start] == 'W' && line[start + 1] == 'E')
-			|| (line[start] == 'E' && line[start + 1] == 'A')))
+	if (!(tex_line_fail(line, start)))
 		return (print_error(ERR_TEX), NULL);
 	start += 2;
 	while (line[start] == ' ' || line[start] == '\t')
@@ -104,13 +108,34 @@ static int	check_if_tex_duplicated(char **lines, int i, int j)
 	return (0);
 }
 
+static int error(t_textures *tex, int count_tex)
+{
+	return (count_tex != 4 || !tex->no_path || !tex->so_path
+		|| !tex->we_path || !tex->ea_path);
+}
+
+static int	parse_tex_line(t_textures *tex, char **lines, int i, int *count)
+{
+	int		j;
+	char	*path;
+
+	j = 0;
+	while (lines[i][j] == ' ' || lines[i][j] == '\t')
+		j++;
+	if (!cardinate_exists(lines[i] + j))
+		return (0);
+	if (check_if_tex_duplicated(lines, i, j) == 1)
+		return (print_error(ERR_TEX));
+	path = extract_path(lines[i]);
+	save_path(path, tex, lines[i][j]);
+	(*count)++;
+	return (0);
+}
 
 int	parse_textures(t_textures *tex, char **lines)
 {
-	int		i;
-	int		j;
-	int		count_tex;
-	char	*path;
+	int	i;
+	int	count_tex;
 
 	if (!tex || !lines)
 		return (print_error(ERR_TEX));
@@ -118,21 +143,11 @@ int	parse_textures(t_textures *tex, char **lines)
 	count_tex = 0;
 	while (lines[i])
 	{
-		j = 0;
-		while (lines[i][j] == ' ' || lines[i][j] == '\t')
-			j++;
-		if (cardinate_exists(lines[i] + j))
-		{
-			if (check_if_tex_duplicated(lines, i, j) == 1)
-				return (print_error(ERR_TEX));
-			path = extract_path(lines[i]);
-			save_path(path, tex, lines[i][j]);
-			count_tex++;
-		}
+		if (parse_tex_line(tex, lines, i, &count_tex))
+			return (1);
 		i++;
 	}
-	if (count_tex != 4 || !tex->no_path || !tex->so_path
-		|| !tex->we_path || !tex->ea_path)
+	if (error(tex, count_tex))
 		return (print_error(ERR_TEX));
 	return (0);
 }
