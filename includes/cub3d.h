@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 16:16:05 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/18 13:30:47 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,11 @@ int		parse_colors(t_color *floor, t_color *ceiling, char **lines);
 /* src/parsing/parse_map.c */
 int		parse_map(t_map *map, t_player *player);
 int		build_map_grid(char **lines, t_map *map);
+void	player_dir_n(t_player *player);
+void	player_dir_s(t_player *player);
+void	player_dir_e(t_player *player);
+void	player_dir_w(t_player *player);
+
 
 /* src/parsing/validate_map.c */
 int		validate_map(t_map *map, t_player *player);
