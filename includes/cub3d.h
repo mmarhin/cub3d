@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/18 13:30:47 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/18 15:02:35 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,17 @@ char	**read_cub_file(char *path);
 
 /* src/parsing/parse_textures.c */
 int		parse_textures(t_textures *tex, char **lines);
+void	save_path(char *path, t_textures *tex, char pos);
+int 	cardinate_exists(char *line);
+int 	tex_line_fail(char *line, int start);
+
 
 /* src/parsing/parse_colors.c */
 int		parse_colors(t_color *floor, t_color *ceiling, char **lines);
+void	assign_floor_color(t_color *floor, int r, int g, int b);
+void	assign_ceiling_color(t_color *ceiling, int r, int g, int b);
+int		check_exact_parts(char **rgb);
+
 
 /* src/parsing/parse_map.c */
 int		parse_map(t_map *map, t_player *player);
