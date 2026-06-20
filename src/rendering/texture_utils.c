@@ -20,11 +20,16 @@
 */
 int	get_tex_color(t_tex *tex, int x, int y)
 {
-	char	*pixel;
+	int		index;
+	uint8_t	*p;
 
-	/* TODO (Mario): compute pixel address and dereference as int */
-	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
-	return (*(int *)pixel);
+	if (x < 0 || x >= tex->width || y < 0 || y >= tex->height)
+		return (0);
+	if (!tex->texture || !tex->texture->pixels)
+		return (0);
+	index = (y * tex->width + x) * 4;
+	p = &tex->texture->pixels[index];
+	return ((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
 }
 
 /*

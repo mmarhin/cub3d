@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 14:21:15 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,14 @@ void	free_copy_map(char **copy)
 */
 void	free_textures(t_game *game)
 {
-	void	*mlx;
-
-	//REVISAR IMPLEMENTACION MLX42 EN FUNCION MLX_DELETE_IMAGE
-	mlx = game->mlx.mlx;
-	if (!mlx)
-		return ;
-	if (game->tex.no.img)
-		mlx_delete_image(mlx, game->tex.no.img);
-	if (game->tex.so.img)
-		mlx_delete_image(mlx, game->tex.so.img);
-	if (game->tex.we.img)
-		mlx_delete_image(mlx, game->tex.we.img);
-	if (game->tex.ea.img)
-		mlx_delete_image(mlx, game->tex.ea.img);
+	if (game->tex.no.texture)
+		mlx_delete_texture(game->tex.no.texture);
+	if (game->tex.so.texture)
+		mlx_delete_texture(game->tex.so.texture);
+	if (game->tex.we.texture)
+		mlx_delete_texture(game->tex.we.texture);
+	if (game->tex.ea.texture)
+		mlx_delete_texture(game->tex.ea.texture);
 	free(game->tex.no_path);
 	free(game->tex.so_path);
 	free(game->tex.we_path);

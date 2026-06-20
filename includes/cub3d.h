@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/18 15:02:35 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-# define CUB3D_H
+#define CUB3D_H
 
+# include "libft.h"
+# include <MLX42/MLX42.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
 # include <fcntl.h>
-# include "../Libft/libft.h"
-# include "MLX42/MLX42.h"
 
 /* -- Window ---------------------------------------------------------------- */
 # define WIN_W		1280
@@ -31,13 +31,13 @@
 # define ROT_SPEED	0.03
 
 /* -- MLX keycodes ---------------------------------------------------------- */
-# define KEY_W		119
-# define KEY_A		97
-# define KEY_S		115
-# define KEY_D		100
-# define KEY_LEFT	65361
-# define KEY_RIGHT	65363
-# define KEY_ESC	65307
+# define KEY_W		MLX_KEY_W
+# define KEY_A		MLX_KEY_A
+# define KEY_S		MLX_KEY_S
+# define KEY_D		MLX_KEY_D
+# define KEY_LEFT	MLX_KEY_LEFT
+# define KEY_RIGHT	MLX_KEY_RIGHT
+# define KEY_ESC	MLX_KEY_ESCAPE
 
 /* -- Subject-required map chars -------------------------------------------- */
 # define EMPTY		'0'
@@ -72,23 +72,15 @@ typedef struct s_color
 /* MLX render image */
 typedef struct s_img
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
+	mlx_image_t	*img;
 }	t_img;
 
-/* One XPM wall texture */
+/* One wall texture loaded from PNG/XPM */
 typedef struct s_tex
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-	int		width;
-	int		height;
+	mlx_texture_t	*texture;
+	int				width;
+	int				height;
 }	t_tex;
 
 /*
@@ -159,102 +151,97 @@ typedef struct s_ray
 /* MLX window / image context */
 typedef struct s_mlx
 {
-	void	*mlx;
-	void	*win;
+	mlx_t	*mlx;
 	t_img	img;
 }	t_mlx;
 
 /* Master game struct – passed everywhere */
-typedef struct s_game
-{
-	t_mlx		mlx;
-	t_map		map;
-	t_player	player;
-	t_textures	tex;
-	t_color		floor;
-	t_color		ceiling;
-}	t_game;
+typedef struct s_game {
+  t_mlx mlx;
+  t_map map;
+  t_player player;
+  t_textures tex;
+  t_color floor;
+  t_color ceiling;
+} t_game;
 
 /* -------------------------------------------------------------------------- */
-/*  Prototypes                                                                 */
+/*  Prototypes */
 /* -------------------------------------------------------------------------- */
 
 /* --- Parsing (Manuel) --- */
 /* src/parsing/parse_args.c */
-int		check_args(int argc, char **argv);
+int check_args(int argc, char **argv);
 
 /* src/parsing/read_file.c */
-char	**read_cub_file(char *path);
+char **read_cub_file(char *path);
 
 /* src/parsing/parse_textures.c */
-int		parse_textures(t_textures *tex, char **lines);
-void	save_path(char *path, t_textures *tex, char pos);
-int 	cardinate_exists(char *line);
-int 	tex_line_fail(char *line, int start);
-
+int parse_textures(t_textures *tex, char **lines);
+void save_path(char *path, t_textures *tex, char pos);
+int cardinate_exists(char *line);
+int tex_line_fail(char *line, int start);
 
 /* src/parsing/parse_colors.c */
-int		parse_colors(t_color *floor, t_color *ceiling, char **lines);
-void	assign_floor_color(t_color *floor, int r, int g, int b);
-void	assign_ceiling_color(t_color *ceiling, int r, int g, int b);
-int		check_exact_parts(char **rgb);
-
+int parse_colors(t_color *floor, t_color *ceiling, char **lines);
+void assign_floor_color(t_color *floor, int r, int g, int b);
+void assign_ceiling_color(t_color *ceiling, int r, int g, int b);
+int check_exact_parts(char **rgb);
 
 /* src/parsing/parse_map.c */
-int		parse_map(t_map *map, t_player *player);
-int		build_map_grid(char **lines, t_map *map);
-void	player_dir_n(t_player *player);
-void	player_dir_s(t_player *player);
-void	player_dir_e(t_player *player);
-void	player_dir_w(t_player *player);
-
+int parse_map(t_map *map, t_player *player);
+int build_map_grid(char **lines, t_map *map);
+void player_dir_n(t_player *player);
+void player_dir_s(t_player *player);
+void player_dir_e(t_player *player);
+void player_dir_w(t_player *player);
 
 /* src/parsing/validate_map.c */
-int		validate_map(t_map *map, t_player *player);
+int validate_map(t_map *map, t_player *player);
 
 /* --- Rendering (Mario) --- */
 /* src/rendering/init_mlx.c */
-int		init_mlx(t_game *game);
+int init_mlx(t_game *game);
 
 /* src/rendering/load_textures.c */
-int		load_textures(t_game *game);
+int load_textures(t_game *game);
 
 /* src/rendering/raycasting.c */
-void	cast_rays(t_game *game);
+void cast_rays(t_game *game);
 
 /* src/rendering/draw.c */
-void	draw_background(t_game *game);
-void	draw_wall_slice(t_game *game, int col, t_ray *ray);
-void	render_frame(t_game *game);
+void draw_background(t_game *game);
+void draw_wall_slice(t_game *game, int col, t_ray *ray);
+void render_frame(t_game *game);
 
 /* src/rendering/texture_utils.c */
-int		get_tex_color(t_tex *tex, int x, int y);
-void	calc_tex_x(t_game *game, t_ray *ray);
+int get_tex_color(t_tex *tex, int x, int y);
+void calc_tex_x(t_game *game, t_ray *ray);
 
 /* --- Events (Mario) --- */
 /* src/events/hooks.c */
 
 // int handle_keydown(int keycode, void *param);
 
-void 	handle_keydown(mlx_key_data_t keydata, void *param);
-void 	handle_close(void *param);
+void handle_keydown(mlx_key_data_t keydata, void *param);
+void handle_close(void *param);
 // int		handle_close(t_game *game);
 
 /* src/events/move.c */
-void	move_player(t_game *game, int keycode);
-void	rotate_player(t_game *game, int keycode);
+void move_player(t_game *game, int keycode);
+void rotate_player(t_game *game, int keycode);
 
 /* --- Cleanup (shared) --- */
 /* src/cleanup/cleanup.c */
-void	free_map(t_map *map);
-void	free_copy_map(char **copy);
-void	free_textures(t_game *game);
-void	free_lines(char **lines);
-void	cleanup_game(t_game *game);
+void free_map(t_map *map);
+void free_copy_map(char **copy);
+void free_textures(t_game *game);
+void free_lines(char **lines);
+void cleanup_game(t_game *game);
 
 /* --- Error utils (Manuel) --- */
 /* src/utils/error.c */
-int		print_error(char *msg);
-void	exit_error(t_game *game, char *msg);
+int print_error(char *msg);
+void exit_error(t_game *game, char *msg);
 
 #endif

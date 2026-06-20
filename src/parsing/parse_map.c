@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 13:46:42 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static int parse_row(t_map *map, t_player *player, int i, int *player_found)
 int	parse_map(t_map *map, t_player *player)
 {
     int		i;
-    int		j;
     int		player_found;
 
     if (!map || !player || !map->grid)
@@ -81,7 +80,6 @@ int	parse_map(t_map *map, t_player *player)
     i = 0;
     while (i < map->rows)
     {
-        j = 0;
         if (parse_row(map, player, i, &player_found))
             return (1);
         i++;

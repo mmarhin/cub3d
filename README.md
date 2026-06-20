@@ -57,10 +57,10 @@ Run the program with a valid `.cub` scene file:
 Example minimal scene file:
 
 ```cub
-NO ./textures/north.xpm
-SO ./textures/south.xpm
-WE ./textures/west.xpm
-EA ./textures/east.xpm
+NO ./textures/no.xpm
+SO ./textures/so.xpm
+WE ./textures/we.xpm
+EA ./textures/ea.xpm
 F 220,100,0
 C 225,30,0
 

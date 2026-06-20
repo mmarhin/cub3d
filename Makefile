@@ -61,7 +61,13 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 # MLX42
 MLX_DIR		= ./libs/MLX42
 MLX         = $(MLX_DIR)/build/libmlx42.a
-MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Linux)
+	MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+else
+	MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a $(MLX_DIR)/build/_deps/glfw-build/src/libglfw3.a -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+endif
 
 # ---------------------------------------------------------------------------- #
 #  Rules                                                                         #

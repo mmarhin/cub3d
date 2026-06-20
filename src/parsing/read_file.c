@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 14:51:33 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,42 @@ static int init_vars(char *path, int *count, char ***map, int *fd)
 	return (0);
 }
 
+static char	**realloc_lines(char **old_map, int count)
+{
+	char	**new_map;
+	int		i;
+
+	new_map = malloc(sizeof(char *) * (count + 2));
+	if (!new_map)
+		return (NULL);
+	i = 0;
+	if (old_map)
+	{
+		while (i < count)
+		{
+			new_map[i] = old_map[i];
+			i++;
+		}
+		free(old_map);
+	}
+	new_map[i] = NULL;
+	new_map[i + 1] = NULL;
+	return (new_map);
+}
+
 static int add_line_to_map(char ***map, char *line, int *count)
 {
+	char	**new_map;
+
 	if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
-	*map = realloc(*map, sizeof(char *) * (*count + 2));
-	if (!*map)
+	new_map = realloc_lines(*map, *count);
+	if (!new_map)
 		return (1);
+	*map = new_map;
 	(*map)[*count] = ft_strdup(line);
+	if (!(*map)[*count])
+		return (1);
 	(*map)[*count + 1] = NULL;
 	(*count)++;
 	return (0);
@@ -66,6 +94,8 @@ char	**read_cub_file(char *path)
 		if (add_line_to_map(&map, line, &count))
 		{
 			free(line);
+			free_lines(map);
+			close(fd);
 			return (NULL);
 		}
 		free(line);

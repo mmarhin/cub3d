@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/12 15:53:08 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 static void game_functions(t_game *game)
 {
-	mlx_key_hook(game->mlx.mlx, handle_keydown, &game);
-	mlx_close_hook(game->mlx.mlx, handle_close, &game);
+	mlx_key_hook(game->mlx.mlx, handle_keydown, game);
+	mlx_close_hook(game->mlx.mlx, handle_close, game);
 	mlx_loop(game->mlx.mlx);
 }
 

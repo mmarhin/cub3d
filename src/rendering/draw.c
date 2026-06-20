@@ -72,6 +72,7 @@ void	render_frame(t_game *game)
 {
 	draw_background(game);
 	cast_rays(game);
-	mlx_image_to_window(game->mlx.mlx, game->mlx.img.img,
-		0, 0);
+	if (game->mlx.img.img->count == 0)
+		mlx_image_to_window(game->mlx.mlx, game->mlx.img.img,
+			0, 0);
 }
