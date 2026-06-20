@@ -19,7 +19,6 @@ char	*free_buffer(char **buffer)
 	return (NULL);
 }
 
-
 char	*read_line(int fd, char *buffer)
 {
 	char	temp[BUFFER_SIZE + 1];
