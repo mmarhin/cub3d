@@ -52,7 +52,8 @@ SRC_UTILS	+= src/utils/parsing/parse_utils.c
 SRCS		= $(SRC_MAIN) $(SRC_PARSING) $(SRC_RENDER) $(SRC_EVENTS) \
 			  $(SRC_CLEANUP) $(SRC_UTILS)
 
-OBJS		= $(SRCS:.c=.o)
+OBJ_DIR		= obj
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 # ---------------------------------------------------------------------------- #
 #  Libraries                                                                     #
@@ -81,7 +82,8 @@ all: libmlx $(NAME)
 $(NAME): $(LIBFT) $(MLX) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -lm -o $(NAME)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
@@ -97,7 +99,8 @@ libmlx:
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(MLX_DIR)/build
-	rm -f $(OBJS)
+	rm -rf $(OBJ_DIR)
+	rm -f $(SRCS:.c=.o)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
