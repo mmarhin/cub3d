@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 14:14:59 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/20 18:07:58 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,31 @@
 **   Convert (r,g,b) -> single int: (r << 16) | (g << 8) | b
 **   Write directly into game->mlx.img.addr.
 */
-void draw_background(t_game *game) { (void)game; }
+void draw_background(t_game *game)
+{
+  int x;
+  int y;
+  uint32_t ceiling_color;
+  uint32_t floor_color;
+  
+  x = 0;
+  ceiling_color = (game->ceiling.r << 16) | (game->ceiling.g << 8) | game->ceiling.b;
+  floor_color = (game->floor.r << 16) | (game->floor.g << 8) | game->floor.b;
+
+  while (x < WIN_W)
+  {
+    y = 0;
+    while (y < WIN_H)
+    {
+      if (y < WIN_H / 2)
+        mlx_put_pixel(game->mlx.img.img, x, y, ceiling_color);
+      else
+        mlx_put_pixel(game->mlx.img.img, x, y, floor_color);
+      y++;
+    }
+    x++;
+  }
+}
 
 /*
 ** draw_wall_slice
