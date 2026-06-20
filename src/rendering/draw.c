@@ -29,10 +29,7 @@
 **   Convert (r,g,b) -> single int: (r << 16) | (g << 8) | b
 **   Write directly into game->mlx.img.addr.
 */
-void	draw_background(t_game *game)
-{
-	(void)game;
-}
+void draw_background(t_game *game) { (void)game; }
 
 /*
 ** draw_wall_slice
@@ -53,11 +50,10 @@ void	draw_background(t_game *game)
 **      b. Get pixel color with get_tex_color(tex, ray->tex_x, tex_y).
 **      c. Write to img.addr at (col, y).
 */
-void	draw_wall_slice(t_game *game, int col, t_ray *ray)
-{
-	(void)game;
-	(void)col;
-	(void)ray;
+void draw_wall_slice(t_game *game, int col, t_ray *ray) {
+  (void)game;
+  (void)col;
+  (void)ray;
 }
 
 /*
@@ -67,12 +63,9 @@ void	draw_wall_slice(t_game *game, int col, t_ray *ray)
 ** Subject: strongly recommends using mlx images for performance.
 */
 
-//REVISAR CAMBIO IMPLEMENTACIÓN FUNCION MLX_IMAGE_TO_WINDOW MLX42
-void	render_frame(t_game *game)
-{
-	draw_background(game);
-	cast_rays(game);
-	if (game->mlx.img.img->count == 0)
-		mlx_image_to_window(game->mlx.mlx, game->mlx.img.img,
-			0, 0);
+void render_frame(t_game *game) {
+  draw_background(game);
+  cast_rays(game);
+  if (game->mlx.img.img->count == 0)
+    mlx_image_to_window(game->mlx.mlx, game->mlx.img.img, 0, 0);
 }
