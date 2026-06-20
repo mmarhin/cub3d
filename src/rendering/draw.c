@@ -37,8 +37,8 @@ void draw_background(t_game *game)
   uint32_t floor_color;
   
   x = 0;
-  ceiling_color = (game->ceiling.r << 16) | (game->ceiling.g << 8) | game->ceiling.b;
-  floor_color = (game->floor.r << 16) | (game->floor.g << 8) | game->floor.b;
+  ceiling_color = (game->ceiling.r << 24) | (game->ceiling.g << 16) | (game->ceiling.b << 8) | 0xFF;
+  floor_color = (game->floor.r << 24) | (game->floor.g << 16) | (game->floor.b << 8) | 0xFF;
 
   while (x < WIN_W)
   {
