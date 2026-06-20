@@ -12,7 +12,6 @@
 
 #include "../../includes/cub3d.h"
 
-
 void	assign_floor_color(t_color *floor, int r, int g, int b)
 {
 	floor->r = r;
@@ -29,8 +28,8 @@ void	assign_ceiling_color(t_color *ceiling, int r, int g, int b)
 
 int	check_exact_parts(char **rgb)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])

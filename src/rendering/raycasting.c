@@ -27,6 +27,8 @@
 **   7. line_height, draw_start, draw_end
 **   8. tex_x (which column inside the texture to sample)
 **   9. Call draw_wall_slice for the column
+**
+** TODO (Mario): fill ray fields and run DDA here
 */
 void	cast_rays(t_game *game)
 {
@@ -37,7 +39,6 @@ void	cast_rays(t_game *game)
 	while (col < WIN_W)
 	{
 		ft_memset(&ray, 0, sizeof(t_ray));
-		/* TODO (Mario): fill ray fields and run DDA here */
 		(void)ray;
 		col++;
 	}

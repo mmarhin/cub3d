@@ -51,7 +51,6 @@ static char	*extract_path(char *line)
 	return (path);
 }
 
-
 static int	check_if_tex_duplicated(char **lines, int i, int j)
 {
 	static int	no_seen;
@@ -78,7 +77,7 @@ static int	check_if_tex_duplicated(char **lines, int i, int j)
 	return (0);
 }
 
-static int error(t_textures *tex, int count_tex)
+static int	error(t_textures *tex, int count_tex)
 {
 	return (count_tex != 4 || !tex->no_path || !tex->so_path
 		|| !tex->we_path || !tex->ea_path);

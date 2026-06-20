@@ -24,7 +24,7 @@ void	save_path(char *path, t_textures *tex, char pos)
 		tex->ea_path = path;
 }
 
-int cardinate_exists(char *line)
+int	cardinate_exists(char *line)
 {
 	while (*line == ' ' || *line == '\t')
 		line++;
@@ -34,10 +34,10 @@ int cardinate_exists(char *line)
 		|| (line[0] == 'E' && line[1] == 'A'));
 }
 
-int tex_line_fail(char *line, int start)
+int	tex_line_fail(char *line, int start)
 {
 	return ((line[start] == 'N' && line[start + 1] == 'O')
-			|| (line[start] == 'S' && line[start + 1] == 'O')
-			|| (line[start] == 'W' && line[start + 1] == 'E')
-			|| (line[start] == 'E' && line[start + 1] == 'A'));
+		|| (line[start] == 'S' && line[start + 1] == 'O')
+		|| (line[start] == 'W' && line[start + 1] == 'E')
+		|| (line[start] == 'E' && line[start + 1] == 'A'));
 }

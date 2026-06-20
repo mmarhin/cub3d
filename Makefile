@@ -30,6 +30,9 @@ SRC_PARSING	= src/parsing/parse_args.c \
 
 SRC_RENDER	= src/rendering/init_mlx.c \
 			  src/rendering/load_textures.c \
+			  src/rendering/xpm_parser.c \
+			  src/rendering/xpm_utils.c \
+			  src/rendering/xpm_cleanup.c \
 			  src/rendering/raycasting.c \
 			  src/rendering/draw.c \
 			  src/rendering/texture_utils.c

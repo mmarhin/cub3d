@@ -12,13 +12,12 @@
 
 #include "../../includes/cub3d.h"
 
-
 static int	rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
 {
-	char **rgb;
-	int r;
-	int g;
-	int b;
+	char	**rgb;
+	int		r;
+	int		g;
+	int		b;
 
 	if (id != 1 && id != 2)
 		return (1);
@@ -67,7 +66,8 @@ static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)
 	*id = 0;
 }
 
-static int check_if_duplicated(char c, t_color *floor, t_color *ceiling, int *id)
+static int	check_if_duplicated(char c, t_color *floor,
+				t_color *ceiling, int *id)
 {
 	if (c == 'F')
 	{
@@ -85,7 +85,7 @@ static int check_if_duplicated(char c, t_color *floor, t_color *ceiling, int *id
 }
 
 int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
-{	
+{
 	int		i;
 	int		id;
 	char	*content;
@@ -94,16 +94,17 @@ int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 	while (lines[i])
 	{
 		if (lines[i][0] == 'F' || lines[i][0] == 'C')
-        {
-            if (check_if_duplicated(lines[i][0], floor, ceiling, &id)
-                || !(content = extract_color_content(lines[i])))
-                return (print_error(ERR_COLOR), 1);
-            if (rgb_split(id, content, ceiling, floor))
-                return (free(content), print_error(ERR_COLOR), 1);
-            free(content);
-        }
+		{
+			content = extract_color_content(lines[i]);
+			if (check_if_duplicated(lines[i][0], floor, ceiling, &id)
+				|| !content)
+				return (print_error(ERR_COLOR), 1);
+			if (rgb_split(id, content, ceiling, floor))
+				return (free(content), print_error(ERR_COLOR), 1);
+			free(content);
+		}
 		i++;
-	}		
+	}
 	if (floor->r == -1 || ceiling->r == -1)
 		return (print_error(ERR_COLOR), 1);
 	return (0);

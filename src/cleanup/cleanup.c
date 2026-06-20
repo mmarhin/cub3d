@@ -42,7 +42,7 @@ void	free_map(t_map *map)
 
 void	free_copy_map(char **copy)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!copy)

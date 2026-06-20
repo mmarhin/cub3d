@@ -20,6 +20,15 @@
 **
 ** Movement is along the player direction vector (W/S) or the
 ** perpendicular strafe vector (A/D).
+**
+** TODO (Mario):
+**   For W: new_x = pos_x + dir_x * MOVE_SPEED
+**          new_y = pos_y + dir_y * MOVE_SPEED
+**   For S: subtract instead.
+**   For A: strafe left (perpendicular to dir).
+**   For D: strafe right.
+**   Collision: only update pos_x if map[map_y][(int)new_x] != '1'
+**              only update pos_y if map[(int)new_y][map_x] != '1'
 */
 void	move_player(t_game *game, int keycode)
 {
@@ -28,15 +37,6 @@ void	move_player(t_game *game, int keycode)
 	double		new_y;
 
 	p = &game->player;
-	/* TODO (Mario):
-	**   For W: new_x = pos_x + dir_x * MOVE_SPEED
-	**          new_y = pos_y + dir_y * MOVE_SPEED
-	**   For S: subtract instead.
-	**   For A: strafe left (perpendicular to dir).
-	**   For D: strafe right.
-	**   Collision: only update pos_x if map[map_y][(int)new_x] != '1'
-	**              only update pos_y if map[(int)new_y][map_x] != '1'
-	*/
 	(void)p;
 	(void)new_x;
 	(void)new_y;
@@ -53,14 +53,14 @@ void	move_player(t_game *game, int keycode)
 **   new_dir_x = dir_x * cos(±ROT_SPEED) - dir_y * sin(±ROT_SPEED)
 **   new_dir_y = dir_x * sin(±ROT_SPEED) + dir_y * cos(±ROT_SPEED)
 ** Same rotation applied to plane_x / plane_y.
+**
+** TODO (Mario):
+**   Pick angle: KEY_LEFT -> +ROT_SPEED, KEY_RIGHT -> -ROT_SPEED
+**   Apply rotation matrix to game->player.dir_x/dir_y
+**   Apply same rotation to game->player.plane_x/plane_y
 */
 void	rotate_player(t_game *game, int keycode)
 {
-	/* TODO (Mario):
-	**   Pick angle: KEY_LEFT → +ROT_SPEED, KEY_RIGHT → -ROT_SPEED
-	**   Apply rotation matrix to game->player.dir_x/dir_y
-	**   Apply same rotation to game->player.plane_x/plane_y
-	*/
 	(void)game;
 	(void)keycode;
 }

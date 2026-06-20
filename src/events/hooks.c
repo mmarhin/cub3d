@@ -22,8 +22,9 @@
 */
 void	handle_keydown(mlx_key_data_t keydata, void *param)
 {
-	t_game	*game = param;
+	t_game	*game;
 
+	game = param;
 	if (keydata.action != MLX_PRESS && keydata.action != MLX_REPEAT)
 		return ;
 	if (keydata.key == KEY_ESC)
@@ -46,8 +47,9 @@ void	handle_keydown(mlx_key_data_t keydata, void *param)
 */
 void	handle_close(void *param)
 {
-	t_game	*game = param;
+	t_game	*game;
 
+	game = param;
 	cleanup_game(game);
 	exit(0);
 }

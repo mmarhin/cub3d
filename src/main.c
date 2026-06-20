@@ -22,7 +22,7 @@
 **   - MLX window: arrow keys rotate, WASD move, ESC and red-cross exit cleanly.
 */
 
-static void game_functions(t_game *game)
+static void	game_functions(t_game *game)
 {
 	mlx_key_hook(game->mlx.mlx, handle_keydown, game);
 	mlx_close_hook(game->mlx.mlx, handle_close, game);

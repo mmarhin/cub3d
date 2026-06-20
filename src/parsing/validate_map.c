@@ -12,7 +12,6 @@
 
 #include "../../includes/cub3d.h"
 
-
 static int	is_open_side(char **grid, t_map *map, int y, int x)
 {
 	int	len;

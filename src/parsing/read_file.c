@@ -26,7 +26,7 @@
 ** Returns NULL and prints Error\n on failure.
 */
 
-static int init_vars(char *path, int *count, char ***map, int *fd)
+static int	init_vars(char *path, int *count, char ***map, int *fd)
 {
 	*count = 0;
 	*map = NULL;
@@ -59,7 +59,7 @@ static char	**realloc_lines(char **old_map, int count)
 	return (new_map);
 }
 
-static int add_line_to_map(char ***map, char *line, int *count)
+static int	add_line_to_map(char ***map, char *line, int *count)
 {
 	char	**new_map;
 
@@ -79,14 +79,12 @@ static int add_line_to_map(char ***map, char *line, int *count)
 
 char	**read_cub_file(char *path)
 {
-	int	fd;
-    char	*line;
-    char    **map;
-    int	count;
-	
-	if (init_vars(path, &count, &map, &fd) == 1)
-		return (NULL);
-	if (fd == -1)
+	int		fd;
+	char	*line;
+	char	**map;
+	int		count;
+
+	if (init_vars(path, &count, &map, &fd) || fd == -1)
 		return (NULL);
 	line = ft_get_next_line(fd);
 	while (line != NULL)

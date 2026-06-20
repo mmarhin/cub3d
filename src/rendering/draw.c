@@ -20,17 +20,17 @@
 **
 ** Fills the top half of the image with ceiling color,
 ** the bottom half with floor color.
+**
+** TODO (Mario):
+**   Iterate y from 0 to WIN_H:
+**     If y < WIN_H / 2 -> put ceiling color pixel
+**     Else             -> put floor color pixel
+**   Use game->ceiling and game->floor (t_color structs from Manuel).
+**   Convert (r,g,b) -> single int: (r << 16) | (g << 8) | b
+**   Write directly into game->mlx.img.addr.
 */
 void	draw_background(t_game *game)
 {
-	/* TODO (Mario):
-	**   Iterate y from 0 to WIN_H:
-	**     If y < WIN_H / 2 → put ceiling color pixel
-	**     Else             → put floor color pixel
-	**   Use game->ceiling and game->floor (t_color structs from Manuel).
-	**   Convert (r,g,b) → single int: (r << 16) | (g << 8) | b
-	**   Write directly into game->mlx.img.addr.
-	*/
 	(void)game;
 }
 
@@ -45,16 +45,16 @@ void	draw_background(t_game *game)
 **   side == 1 && ray_dir_y > 0  → SO (South)
 **   side == 0 && ray_dir_x > 0  → EA (East)
 **   side == 0 && ray_dir_x < 0  → WE (West)
+**
+** TODO (Mario):
+**   1. Select the correct t_tex* based on ray->side + ray_dir.
+**   2. For each y in [ray->draw_start, ray->draw_end]:
+**      a. Compute tex_y from the texture height and y.
+**      b. Get pixel color with get_tex_color(tex, ray->tex_x, tex_y).
+**      c. Write to img.addr at (col, y).
 */
 void	draw_wall_slice(t_game *game, int col, t_ray *ray)
 {
-	/* TODO (Mario):
-	**   1. Select the correct t_tex* based on ray->side + ray_dir.
-	**   2. For each y in [ray->draw_start, ray->draw_end]:
-	**      a. Compute tex_y from the texture height and y.
-	**      b. Get pixel color with get_tex_color(tex, ray->tex_x, tex_y).
-	**      c. Write to img.addr at (col, y).
-	*/
 	(void)game;
 	(void)col;
 	(void)ray;
