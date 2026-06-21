@@ -85,7 +85,7 @@ char	**read_cub_file(char *path)
 	int		count;
 
 	if (init_vars(path, &count, &map, &fd) || fd == -1)
-		return (NULL);
+		return (print_error(ERR_OPEN), NULL);
 	line = ft_get_next_line(fd);
 	while (line != NULL)
 	{
