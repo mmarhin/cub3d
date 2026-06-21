@@ -47,6 +47,18 @@ int	get_tex_color(t_tex *tex, int x, int y)
 */
 void	calc_tex_x(t_game *game, t_ray *ray)
 {
-	(void)game;
-	(void)ray;
+	double	wall_x;
+	int		tex_width;
+
+	tex_width = game->tex.no.width;
+	if (ray->side == 0)
+		wall_x = game->player.pos_y + ray->perp_wall_dist * ray->ray_dir_y;
+	else
+		wall_x = game->player.pos_x + ray->perp_wall_dist * ray->ray_dir_x;
+	wall_x -= floor(wall_x);
+	ray->tex_x = (int)(wall_x * (double)tex_width);
+	if (ray->side == 0 && ray->ray_dir_x > 0)
+		ray->tex_x = tex_width - ray->tex_x - 1;
+	if (ray->side == 1 && ray->ray_dir_y < 0)
+		ray->tex_x = tex_width - ray->tex_x - 1;
 }
