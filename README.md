@@ -51,7 +51,6 @@ Run the program by passing a valid `.cub` scene file as the first and only argum
 - Lode Vandevenne's Raycasting Tutorial: https://lodev.org/cgtutor/raycasting.html
 - Wolfenstein 3D technical background: https://en.wikipedia.org/wiki/Wolfenstein_3D
 - `man 3 math` for trigonometric and mathematical functions.
-- `man gettimeofday` for time-based or frame calculations.
 
 **AI Usage:**
 AI was used as a supportive tool to help structure the raycasting logic, better understand memory leaks reported by Valgrind regarding miniLibX, and generate initial map validation logic outlines. At no point was AI used to blindly generate final code; all responses were reviewed, tested, and deeply understood by the team (mamarin- and mruiz-ur) before being integrated into the project.
