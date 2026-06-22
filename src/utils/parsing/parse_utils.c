@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:30:03 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/12 16:13:51 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/22 12:30:49 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,39 @@ static int	find_boundaries(char **lines, int *start, int *end)
 	return (0);
 }
 
+static size_t	trimmed_len(char *line)
+{
+	size_t	len;
+
+	len = ft_strlen(line);
+	while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+		len--;
+	return (len);
+}
+
+static int	build_map(t_map *map, char **lines, int *start, size_t len)
+{
+	int		i;
+	size_t	j;
+
+	i = -1;
+	while (++i < map->rows)
+	{
+		len = trimmed_len(lines[*start + i]);
+		map->grid[i] = ft_calloc(map->cols + 1, sizeof(char));
+		if (!map->grid[i])
+			return (1);
+		ft_memset(map->grid[i], ' ', map->cols);
+		j = 0;
+		while (j < len)
+		{
+			map->grid[i][j] = lines[*start + i][j];
+			j++;
+		}
+	}
+	return (0);
+}
+
 int	build_map_grid(char **lines, t_map *map)
 {
 	int		start;
@@ -57,20 +90,17 @@ int	build_map_grid(char **lines, t_map *map)
 		return (1);
 	map->rows = end - start + 1;
 	map->cols = 0;
-	map->grid = ft_calloc(map->rows + 1, sizeof(char *));
-	if (!map->grid)
-		return (1);
 	i = -1;
 	while (++i < map->rows)
 	{
-		len = ft_strlen(lines[start + i]);
-		if (len > 0 && lines[start + i][len - 1] == '\n')
-			len--;
+		len = trimmed_len(lines[start + i]);
 		if ((int)len > map->cols)
 			map->cols = len;
-		map->grid[i] = ft_substr(lines[start + i], 0, len);
-		if (!map->grid[i])
-			return (1);
 	}
+	map->grid = ft_calloc(map->rows + 1, sizeof(char *));
+	if (!map->grid)
+		return (1);
+	if (build_map(map, lines, &start, len) == 1)
+		return (1);
 	return (0);
 }

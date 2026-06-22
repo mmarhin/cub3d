@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/09 14:41:41 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/22 12:45:55 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,34 @@
 **   KEY_LEFT/RIGHT → rotate the camera (look left/right)
 **   KEY_W/A/S/D    → move through the maze
 */
-void	handle_keydown(mlx_key_data_t keydata, void *param)
+static void	handle_movement(t_game *game, bool *moved)
+{
+	if (mlx_is_key_down(game->mlx.mlx, KEY_W))
+		(move_player(game, KEY_W), *moved = true);
+	if (mlx_is_key_down(game->mlx.mlx, KEY_S))
+		(move_player(game, KEY_S), *moved = true);
+	if (mlx_is_key_down(game->mlx.mlx, KEY_A))
+		(move_player(game, KEY_A), *moved = true);
+	if (mlx_is_key_down(game->mlx.mlx, KEY_D))
+		(move_player(game, KEY_D), *moved = true);
+}
+
+void	handle_loop(void *param)
 {
 	t_game	*game;
+	bool	moved;
 
 	game = param;
-	if (keydata.action != MLX_PRESS && keydata.action != MLX_REPEAT)
-		return ;
-	if (keydata.key == KEY_ESC)
+	moved = false;
+	if (mlx_is_key_down(game->mlx.mlx, KEY_ESC))
 		handle_close(param);
-	else if (keydata.key == KEY_LEFT || keydata.key == KEY_RIGHT)
-		rotate_player(game, keydata.key);
-	else if (keydata.key == KEY_W || keydata.key == KEY_A
-		|| keydata.key == KEY_S || keydata.key == KEY_D)
-		move_player(game, keydata.key);
-	render_frame(game);
+	if (mlx_is_key_down(game->mlx.mlx, KEY_LEFT))
+		(rotate_player(game, KEY_LEFT), moved = true);
+	if (mlx_is_key_down(game->mlx.mlx, KEY_RIGHT))
+		(rotate_player(game, KEY_RIGHT), moved = true);
+	handle_movement(game, &moved);
+	if (moved)
+		render_frame(game);
 }
 
 /*

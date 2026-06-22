@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/22 12:44:52 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define WIN_TITLE	"cub3D"
 
 /* -- Movement / rotation speeds ------------------------------------------- */
-# define MOVE_SPEED	0.05
-# define ROT_SPEED	0.03
+# define MOVE_SPEED	0.15
+# define ROT_SPEED	0.13
 
 /* -- MLX keycodes ---------------------------------------------------------- */
 # define KEY_W		MLX_KEY_W
@@ -260,7 +260,7 @@ void			calc_tex_x(t_game *game, t_ray *ray);
 
 /* --- Events (Mario) --- */
 /* src/events/hooks.c */
-void			handle_keydown(mlx_key_data_t keydata, void *param);
+void			handle_loop(void *param);
 void			handle_close(void *param);
 
 /* src/events/move.c */

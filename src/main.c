@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/22 12:44:52 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 static void	game_functions(t_game *game)
 {
-	mlx_key_hook(game->mlx.mlx, handle_keydown, game);
+	mlx_loop_hook(game->mlx.mlx, handle_loop, game);
 	mlx_close_hook(game->mlx.mlx, handle_close, game);
 	mlx_loop(game->mlx.mlx);
 }
@@ -40,9 +40,8 @@ int	main(int argc, char **argv)
 	lines = read_cub_file(argv[1]);
 	if (!lines)
 		return (1);
-	if (parse_textures(&game.tex, lines)
-		|| parse_colors(&game.floor, &game.ceiling, lines)
-		|| build_map_grid(lines, &game.map)
+	if (parse_textures(&game.tex, lines) || parse_colors(&game.floor,
+			&game.ceiling, lines) || build_map_grid(lines, &game.map)
 		|| parse_map(&game.map, &game.player))
 		return (free_lines(lines), cleanup_game(&game), 1);
 	free_lines(lines);
