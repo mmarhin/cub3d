@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/22 12:44:52 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/22 12:54:44 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define WIN_TITLE	"cub3D"
 
 /* -- Movement / rotation speeds ------------------------------------------- */
-# define MOVE_SPEED	0.15
-# define ROT_SPEED	0.13
+# define MOVE_SPEED	0.05
+# define ROT_SPEED	0.03
 
 /* -- MLX keycodes ---------------------------------------------------------- */
 # define KEY_W		MLX_KEY_W
