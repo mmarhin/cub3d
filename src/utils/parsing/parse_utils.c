@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:30:03 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/22 12:30:49 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/23 14:35:56 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,32 @@ static int	is_empty_line(char *line)
 	return (0);
 }
 
+
 static int	find_boundaries(char **lines, int *start, int *end)
 {
 	int	i;
+	int	in_map;
+	int	map_ended;
 
+	init_boundaries_vars(&i, &in_map, &map_ended);
+	*start = -1;
 	*end = -1;
-	i = 0;
 	while (lines[i])
 	{
-		if (!is_empty_line(lines[i]))
+		if (lines[i][0] == '1' || lines[i][0] == '0')
+		{
+			if (map_ended)
+				return (print_error(ERR_MAP_CHAR), 1);
+			if (!in_map && (++in_map))
+				*start = i;
 			*end = i;
+		}
+		else if (in_map && is_empty_line(lines[i]))
+			map_ended = 1;
 		i++;
 	}
 	if (*end < 0)
 		return (print_error(ERR_MAP_CHAR), 1);
-	*start = *end;
-	while (*start > 0 && !is_empty_line(lines[*start - 1]))
-		(*start)--;
 	return (0);
 }
 

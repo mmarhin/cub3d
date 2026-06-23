@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/20 12:23:26 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/06/23 13:45:48 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,47 +45,47 @@ static void	player_start_pos(t_player *player, t_map *map, int i, int j)
 	map->grid[i][j] = '0';
 }
 
-static int	parse_row(t_map *map, t_player *player, int i, int *player_found)
+static int  parse_row(t_map *map, t_player *player, int i, int *player_found, int *flag)
 {
-	int	j;
+    int j;
 
-	j = 0;
-	while (map->grid[i][j])
-	{
-		if (map->grid[i][j] == ' ' || map->grid[i][j] == '1'
-			|| map->grid[i][j] == '0')
-			j++;
-		else if (check_options(map->grid[i][j]) == 0)
-		{
-			if (*player_found == 1)
-				return (print_error(ERR_PLAYER), 1);
-			*player_found = 1;
-			player_start_pos(player, map, i, j);
-			j++;
-		}
-		else
-			return (print_error(ERR_MAP_CHAR), 1);
-	}
-	return (0);
+    j = 0;
+    while (map->grid[i][j])
+    {
+        if (map->grid[i][j] == ' ' || map->grid[i][j] == '1' || map->grid[i][j] == '0')
+            { *flag = 1; j++; }
+        else if (check_options(map->grid[i][j]) == 0)
+        {
+            if (*player_found == 1)
+                return (print_error(ERR_PLAYER), 1);
+            *player_found = 1;
+            player_start_pos(player, map, i, j);
+            j++;
+        }
+        else
+            return (print_error(ERR_MAP_CHAR), 1);
+    }
+    return (0);
 }
 
-int	parse_map(t_map *map, t_player *player)
+int parse_map(t_map *map, t_player *player)
 {
-	int	i;
-	int	player_found;
+    int i;
+    int player_found;
+    int flag;
 
-	if (!map || !player || !map->grid)
-		return (1);
-	player_found = 0;
-	i = 0;
-	while (i < map->rows)
-	{
-		if (parse_row(map, player, i, &player_found))
-			return (1);
-		i++;
-	}
-	if (player_found == 0)
-		return (print_error(ERR_PLAYER), 1);
-	set_player_pos(player);
-	return (0);
+    if (!map || !player || !map->grid)
+        return (1);
+    player_found = 0;
+    flag = 0;
+    i = -1;
+    while (++i < map->rows)
+    {
+        if (parse_row(map, player, i, &player_found, &flag))
+            return (1);
+    }
+    if (!player_found)
+        return (print_error(ERR_PLAYER), 1);
+    set_player_pos(player);
+    return (0);
 }

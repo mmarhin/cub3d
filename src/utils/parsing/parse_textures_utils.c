@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 15:01:27 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 15:01:51 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/23 14:36:40 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,12 @@ int	tex_line_fail(char *line, int start)
 		|| (line[start] == 'S' && line[start + 1] == 'O')
 		|| (line[start] == 'W' && line[start + 1] == 'E')
 		|| (line[start] == 'E' && line[start + 1] == 'A'));
+}
+
+//Find_boundaries part of function placed here for norminette
+void	init_boundaries_vars(int *i, int *in_map, int *map_ended)
+{
+	*i = 0;
+	*in_map = 0;
+	*map_ended = 0;
 }

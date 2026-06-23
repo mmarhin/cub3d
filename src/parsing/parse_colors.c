@@ -6,39 +6,39 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 15:00:36 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/23 12:39:50 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static int	rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
+static int  rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
 {
-	char	**rgb;
-	int		r;
-	int		g;
-	int		b;
+    char    **rgb;
+    int     len;
+    int     col[3];
 
-	if (id != 1 && id != 2)
-		return (1);
-	rgb = ft_split(content, ',');
-	if (!rgb)
-		return (1);
-	if (check_exact_parts(rgb))
-		return (free_lines(rgb), 1);
-	r = ft_atoi(rgb[0]);
-	g = ft_atoi(rgb[1]);
-	b = ft_atoi(rgb[2]);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (free_lines(rgb), 1);
-	if (id == 1)
-		assign_floor_color(floor, r, g, b);
-	else
-		assign_ceiling_color(ceiling, r, g, b);
-	free_lines(rgb);
-	return (0);
+	len = ft_strlen(content);
+    if (id != 1 && id != 2)
+        return (1);
+    if (check_if_trim(len, content))
+        return (1);
+    rgb = ft_split(content, ',');
+    if (!rgb || check_exact_parts(rgb))
+        return (!rgb ? 1 : (free_lines(rgb), 1));
+    col[0] = ft_atoi(rgb[0]);
+    col[1] = ft_atoi(rgb[1]);
+    col[2] = ft_atoi(rgb[2]);
+    if (col[0] < 0 || col[0] > 255 || col[1] < 0 || col[1] > 255
+        || col[2] < 0 || col[2] > 255)
+        return (free_lines(rgb), 1);
+    if (id == 1)
+        assign_floor_color(floor, col[0], col[1], col[2]);
+    else
+        assign_ceiling_color(ceiling, col[0], col[1], col[2]);
+    free_lines(rgb);
+    return (0);
 }
-
 static char	*extract_color_content(char *line)
 {
 	int	start;

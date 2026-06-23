@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 14:58:35 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 14:59:40 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/23 12:40:05 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,36 @@ void	assign_ceiling_color(t_color *ceiling, int r, int g, int b)
 	ceiling->b = b;
 }
 
+int	check_if_trim(int len, char *content)
+{
+    if (len == 0 || content[len - 1] == ',')
+	{
+        return (1);
+	}
+	return (0);
+}
+
 int	check_exact_parts(char **rgb)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
+	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
 		return (1);
 	while (rgb[i])
 	{
 		j = 0;
 		while (rgb[i][j])
 		{
+			if (rgb[i][j] == ' ' || rgb[i][j] == '\t')
+				j++;
 			if (!ft_isdigit(rgb[i][j]))
 				return (1);
 			j++;
 		}
+		if (j == 0)
+			return (1);
 		i++;
 	}
 	if (i != 3)

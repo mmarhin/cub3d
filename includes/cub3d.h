@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/22 15:45:57 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/23 14:37:08 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,8 @@ int				parse_colors(t_color *floor, t_color *ceiling, char **lines);
 void			assign_floor_color(t_color *floor, int r, int g, int b);
 void			assign_ceiling_color(t_color *ceiling, int r, int g, int b);
 int				check_exact_parts(char **rgb);
+int				check_if_trim(int len, char *content);
+
 
 /* src/parsing/parse_map.c */
 int				parse_map(t_map *map, t_player *player);
@@ -218,6 +220,8 @@ void			player_dir_n(t_player *player);
 void			player_dir_s(t_player *player);
 void			player_dir_e(t_player *player);
 void			player_dir_w(t_player *player);
+void			init_boundaries_vars(int *i, int *in_map, int *map_ended);
+
 
 /* src/parsing/validate_map.c */
 int				validate_map(t_map *map, t_player *player);
