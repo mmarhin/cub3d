@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/23 14:37:08 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/28 11:24:14 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <math.h>
 # include <fcntl.h>
+# include <string.h>
+# include <ctype.h>
 
 /* -- Window ---------------------------------------------------------------- */
 # define WIN_W		1280
@@ -211,6 +213,8 @@ void			assign_floor_color(t_color *floor, int r, int g, int b);
 void			assign_ceiling_color(t_color *ceiling, int r, int g, int b);
 int				check_exact_parts(char **rgb);
 int				check_if_trim(int len, char *content);
+char 			*remove_spaces(char *s);
+
 
 
 /* src/parsing/parse_map.c */
