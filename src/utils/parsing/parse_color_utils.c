@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 14:58:35 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/28 11:32:09 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:09:47 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	assign_ceiling_color(t_color *ceiling, int r, int g, int b)
 
 int	check_if_trim(int len, char *content)
 {
-    if (len == 0 || content[len - 1] == ',')
+	if (len == 0 || content[len - 1] == ',')
 	{
-        return (1);
+		return (1);
 	}
 	return (0);
 }
@@ -63,12 +63,12 @@ int	check_exact_parts(char **rgb)
 	return (0);
 }
 
-char *remove_spaces(char *s)
+char	*remove_spaces(char *s)
 {
-	int i;
-	int j;
-	char *result; 
-	
+	int			i;
+	int			j;
+	char		*result;
+
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char *) * ft_strlen(s) + 1);
@@ -81,5 +81,5 @@ char *remove_spaces(char *s)
 		i++;
 	}
 	result[j] = '\0';
-	return (result);	
+	return (result);
 }
