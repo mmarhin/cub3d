@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:21:21 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:26:30 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,6 @@ static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)
 	*id = 0;
 }
 
-static int	check_if_duplicated(char c, t_color *floor,
-				t_color *ceiling, int *id)
-{
-	if (c == 'F')
-	{
-		if (floor->r != -1)
-			return (1);
-		*id = 1;
-	}
-	else
-	{
-		if (ceiling->r != -1)
-			return (1);
-		*id = 2;
-	}
-	return (0);
-}
 
 int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 {

@@ -6,7 +6,7 @@
 #    By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#              #
-#    Updated: 2026/06/18 15:05:49 by mruiz-ur         ###   ########.fr        #
+#    Updated: 2026/09/14 11:29:24 by mruiz-ur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRC_UTILS	= src/utils/error.c \
 			  src/utils/parsing/parse_map_utils.c \
 			  src/utils/parsing/parse_textures_utils.c \
 			  src/utils/parsing/parse_color_utils.c \
+			  src/utils/parsing/parse_color_utils_extra.c \
 
 SRC_UTILS	+= src/utils/parsing/parse_utils.c
 

@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/06/28 11:24:14 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:29:03 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,9 @@ void			assign_floor_color(t_color *floor, int r, int g, int b);
 void			assign_ceiling_color(t_color *ceiling, int r, int g, int b);
 int				check_exact_parts(char **rgb);
 int				check_if_trim(int len, char *content);
-char 			*remove_spaces(char *s);
+char			*remove_spaces(char *s);
+int				check_if_duplicated(char c, t_color *floor,
+					t_color *ceiling, int *id);
 
 
 
