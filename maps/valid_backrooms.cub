@@ -1,5 +1,5 @@
-F 136,115,44     
-C 255,253,208
+F 132,115   ,44                     
+C 255    ,253 ,208
 
 NO ./textures/no_backroom.xpm
 SO ./textures/so_backroom.xpm

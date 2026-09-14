@@ -6,39 +6,45 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:01:21 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:21:21 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static	int	rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
+static int	assign_colors(int *col, char **rgb, t_color *color)
 {
-	char	**rgb;
-	int		len;
-	int		col[3];
-
-	len = ft_strlen(content);
-	if (id != 1 && id != 2)
-		return (1);
-	if (check_if_trim(len, content))
-		return (1);
-	rgb = ft_split(content, ',');
-	if (!rgb || check_exact_parts(rgb))
-	{
-		free_lines(rgb);
-		return (1);
-	}
 	col[0] = ft_atoi(rgb[0]);
 	col[1] = ft_atoi(rgb[1]);
 	col[2] = ft_atoi(rgb[2]);
 	if (col[0] < 0 || col[0] > 255 || col[1] < 0 || col[1] > 255
 		|| col[2] < 0 || col[2] > 255)
+		return (1);
+	color->r = col[0];
+	color->g = col[1];
+	color->b = col[2];
+	return (0);
+}
+
+static int	rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
+{
+	char	**rgb;
+	int		col[3];
+	t_color	*color;
+
+	if (id != 1 && id != 2)
+		return (1);
+	if (check_if_trim(ft_strlen(content), content))
+		return (1);
+	rgb = ft_split(content, ',');
+	if (!rgb || check_exact_parts(rgb))
 		return (free_lines(rgb), 1);
 	if (id == 1)
-		assign_floor_color(floor, col[0], col[1], col[2]);
+		color = floor;
 	else
-		assign_ceiling_color(ceiling, col[0], col[1], col[2]);
+		color = ceiling;
+	if (assign_colors(col, rgb, color))
+		return (free_lines(rgb), 1);
 	free_lines(rgb);
 	return (0);
 }
