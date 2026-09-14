@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:26:30 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:46:57 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)
 	*i = 0;
 	*id = 0;
 }
-
 
 int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 {

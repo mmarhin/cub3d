@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 13:26:28 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:42:47 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:46:38 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	player_dir_w(t_player *player)
 
 int	is_valid_tile(char c)
 {
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\v'
-        || c == '\r' || c == '0' || c == '1')
-        return (1);
-    return (0);
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v'
+		|| c == '\r' || c == '0' || c == '1')
+		return (1);
+	return (0);
 }
