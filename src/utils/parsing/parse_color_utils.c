@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 14:58:35 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:09:47 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:54:41 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,32 +29,36 @@ void	assign_ceiling_color(t_color *ceiling, int r, int g, int b)
 int	check_if_trim(int len, char *content)
 {
 	if (len == 0 || content[len - 1] == ',')
-	{
 		return (1);
-	}
 	return (0);
+}
+
+static int	check_number(char *number)
+{
+	int	i;
+
+	i = 0;
+	while (number[i] == ' ' || number[i] == '\t')
+		i++;
+	if (!ft_isdigit(number[i]))
+		return (1);
+	while (ft_isdigit(number[i]))
+		i++;
+	while (number[i] == ' ' || number[i] == '\t')
+		i++;
+	return (number[i] != '\0');
 }
 
 int	check_exact_parts(char **rgb)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
 		return (1);
 	while (rgb[i])
 	{
-		j = 0;
-		while (rgb[i][j])
-		{
-			if (rgb[i][j] == ' ' || rgb[i][j] == '\t')
-				j++;
-			if (!ft_isdigit(rgb[i][j]))
-				return (1);
-			j++;
-		}
-		if (j == 0)
+		if (check_number(rgb[i]))
 			return (1);
 		i++;
 	}
@@ -63,23 +67,23 @@ int	check_exact_parts(char **rgb)
 	return (0);
 }
 
-char	*remove_spaces(char *s)
-{
-	int			i;
-	int			j;
-	char		*result;
+// char	*remove_spaces(char *s)
+// {
+// 	int			i;
+// 	int			j;
+// 	char		*result;
 
-	i = 0;
-	j = 0;
-	result = malloc(sizeof(char *) * ft_strlen(s) + 1);
-	if (!result)
-		return (free(result), NULL);
-	while (s[i])
-	{
-		if (s[i] != ' ')
-			result[j++] = s[i];
-		i++;
-	}
-	result[j] = '\0';
-	return (result);
-}
+// 	i = 0;
+// 	j = 0;
+// 	result = malloc(sizeof(char) * ft_strlen(s) + 1);
+// 	if (!result)
+// 		return (free(result), NULL);
+// 	while (s[i])
+// 	{
+// 		if (s[i] != ' ')
+// 			result[j++] = s[i];
+// 		i++;
+// 	}
+// 	result[j] = '\0';
+// 	return (result);
+// }

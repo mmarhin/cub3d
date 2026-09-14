@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:14:05 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:55:43 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static int	flood_fill(char **grid, t_map *map, int y, int x)
 		return (1);
 	if (x < 0 || x >= (int)ft_strlen(grid[y]))
 		return (1);
-	if (grid[y][x] == '1' || grid[y][x] == 'V')
+	if (grid[y][x] == '1' || grid[y][x] == ' ' || grid[y][x] == 'V')
 		return (0);
 	grid[y][x] = 'V';
 	if (flood_fill(grid, map, y - 1, x))

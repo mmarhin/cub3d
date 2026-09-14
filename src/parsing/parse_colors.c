@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:46:57 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:51:00 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,25 @@ static int	rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
 
 static char	*extract_color_content(char *line)
 {
-	char	*result;
 	char	*substr;
 	int		start;
 	int		len;
 
 	start = 1;
-	while (line[start] == ' ')
+	while (line[start] == ' ' || line[start] == '\t')
 		start++;
 	if (line[start] == '\0')
 		return (NULL);
 	len = 0;
 	while (line[start + len]
-		&& line[start + len] != '\t' && line[start + len] != '\n')
+		&& line[start + len] != '\n')
 		len++;
 	if (len == 0)
 		return (NULL);
 	substr = ft_substr(line, start, len);
 	if (!substr)
 		return (NULL);
-	result = remove_spaces(substr);
-	free(substr);
-	if (!result)
-		return (NULL);
-	return (result);
+	return (substr);
 }
 
 static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:30:03 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:06:49 by mamarin-         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:34:03 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	find_boundaries(char **lines, int *start, int *end)
 	*end = -1;
 	while (lines[i])
 	{
-		if (lines[i][0] == '1' || lines[i][0] == '0')
+		if (lines[i][0] == '1' || lines[i][0] == '0' || lines[i][0] == ' ')
 		{
 			if (map_ended)
 				return (print_error(ERR_MAP_CHAR), 1);
