@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mamarin-          #+#    #+#             */
-/*   Updated: 2026/09/14 11:29:03 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:43:15 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ void			player_dir_s(t_player *player);
 void			player_dir_e(t_player *player);
 void			player_dir_w(t_player *player);
 void			init_boundaries_vars(int *i, int *in_map, int *map_ended);
+int				is_valid_tile(char c);
+
 
 
 /* src/parsing/validate_map.c */
