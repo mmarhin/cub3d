@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/23 13:45:48 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 10:50:06 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ static int  parse_row(t_map *map, t_player *player, int i, int *player_found, in
     j = 0;
     while (map->grid[i][j])
     {
-        if (map->grid[i][j] == ' ' || map->grid[i][j] == '1' || map->grid[i][j] == '0')
+        if (map->grid[i][j] == ' ' || map->grid[i][j] == '\t' 
+            || map->grid[i][j] == '1'  || map->grid[i][j] == '\n'
+            || map->grid[i][j] == '\v' || map->grid[i][j] == '\r'
+            || map->grid[i][j] == '0')
             { *flag = 1; j++; }
         else if (check_options(map->grid[i][j]) == 0)
         {
