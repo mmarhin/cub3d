@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/23 12:39:50 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/28 11:34:22 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,14 @@ static int  rgb_split(int id, char *content, t_color *ceiling, t_color *floor)
     free_lines(rgb);
     return (0);
 }
+
+ 
 static char	*extract_color_content(char *line)
 {
 	int	start;
 	int	len;
+	char	*result;
+	char	*substr;
 
 	start = 1;
 	while (line[start] == ' ')
@@ -50,12 +54,18 @@ static char	*extract_color_content(char *line)
 	if (line[start] == '\0')
 		return (NULL);
 	len = 0;
-	while (line[start + len] && line[start + len] != ' '
-		&& line[start + len] != '\t' && line[start + len] != '\n')
+	while (line[start + len] && line[start + len] != '\t' && line[start + len] != '\n')
 		len++;
 	if (len == 0)
 		return (NULL);
-	return (ft_substr(line, start, len));
+	substr = ft_substr(line, start, len);
+	if (!substr)
+		return (NULL);
+	result = remove_spaces(substr);
+	free(substr);
+	if (!result)
+		return (NULL);
+	return (result);
 }
 
 static void	init_vars(t_color *floor, t_color *ceiling, int *i, int *id)
@@ -96,6 +106,8 @@ int	parse_colors(t_color *floor, t_color *ceiling, char **lines)
 		if (lines[i][0] == 'F' || lines[i][0] == 'C')
 		{
 			content = extract_color_content(lines[i]);
+			if (!content)
+				return (free(content), print_error(ERR_COLOR), 1);
 			if (check_if_duplicated(lines[i][0], floor, ceiling, &id)
 				|| !content)
 				return (print_error(ERR_COLOR), 1);

@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 14:58:35 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/23 12:40:05 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/06/28 11:32:09 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,25 @@ int	check_exact_parts(char **rgb)
 	if (i != 3)
 		return (1);
 	return (0);
+}
+
+char *remove_spaces(char *s)
+{
+	int i;
+	int j;
+	char *result; 
+	
+	i = 0;
+	j = 0;
+	result = malloc(sizeof(char *) * ft_strlen(s) + 1);
+	if (!result)
+		return (free(result), NULL);
+	while (s[i])
+	{
+		if (s[i] != ' ')
+			result[j++] = s[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);	
 }
