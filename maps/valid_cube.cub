@@ -1,0 +1,12 @@
+
+NO ./textures/no_backroom.xpm
+SO ./textures/so_backroom.xpm
+WE ./textures/we_backroom.xpm
+EA ./textures/ea_backroom.xpm
+
+C 0,0,0
+F 136,115,44
+
+111
+1S1
+111
