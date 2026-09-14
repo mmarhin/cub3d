@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: mamarin- <mamarin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 10:43:25 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:14:05 by mamarin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@
 
 static void	free_grid(char **copy)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (copy[i])
@@ -111,8 +111,8 @@ static int	flood_fill(char **grid, t_map *map, int y, int x)
 	if (x < 0 || x >= (int)ft_strlen(grid[y]))
 		return (1);
 	if (grid[y][x] == '1' || grid[y][x] == 'V')
-		return (0);	
-	grid[y][x] = 'V'; // marcamos como visitado
+		return (0);
+	grid[y][x] = 'V';
 	if (flood_fill(grid, map, y - 1, x))
 		return (1);
 	if (flood_fill(grid, map, y + 1, x))
@@ -131,14 +131,11 @@ int	validate_map(t_map *map, t_player *player)
 
 	if (!map || !map->grid || map->rows <= 0 || map->cols <= 0)
 		return (print_error(ERR_MAP_CLOSED), 1);
-
 	grid_copy = copy_grid(map->grid, map->rows);
 	if (!grid_copy)
 		return (1);
-
 	result = flood_fill(grid_copy, map, player->pos_y, player->pos_x);
 	free_grid(grid_copy);
-
 	if (result)
 		return (print_error(ERR_MAP_CLOSED), 1);
 	return (0);
