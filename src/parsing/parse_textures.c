@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/06/18 15:01:13 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/17 11:32:32 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 
 static char	*extract_path(char *line)
 {
+	char	*path;
 	int		start;
 	int		len;
-	char	*path;
 
 	if (!line)
 		return (print_error(ERR_TEX), NULL);
@@ -79,14 +79,14 @@ static int	check_if_tex_duplicated(char **lines, int i, int j)
 
 static int	error(t_textures *tex, int count_tex)
 {
-	return (count_tex != 4 || !tex->no_path || !tex->so_path
-		|| !tex->we_path || !tex->ea_path);
+	return (count_tex != 4 || !tex->no_path
+		|| !tex->so_path || !tex->we_path || !tex->ea_path);
 }
 
 static int	parse_tex_line(t_textures *tex, char **lines, int i, int *count)
 {
-	int		j;
 	char	*path;
+	int		j;
 
 	j = 0;
 	while (lines[i][j] == ' ' || lines[i][j] == '\t')
@@ -103,8 +103,8 @@ static int	parse_tex_line(t_textures *tex, char **lines, int i, int *count)
 
 int	parse_textures(t_textures *tex, char **lines)
 {
-	int	i;
 	int	count_tex;
+	int	i;
 
 	if (!tex || !lines)
 		return (print_error(ERR_TEX));
