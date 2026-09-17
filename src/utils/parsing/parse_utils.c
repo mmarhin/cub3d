@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:30:03 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 12:34:03 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/17 12:08:14 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	build_map(t_map *map, char **lines, int *start, size_t len)
 		map->grid[i] = ft_calloc(map->cols + 1, sizeof(char));
 		if (!map->grid[i])
 			return (1);
-		ft_memset(map->grid[i], ' ', map->cols);
+		ft_memset(map->grid[i], '#', map->cols);
 		j = 0;
 		while (j < len)
 		{

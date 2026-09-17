@@ -6,7 +6,7 @@
 /*   By: mruiz-ur <mruiz-ur@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:00:00 by mruiz-ur          #+#    #+#             */
-/*   Updated: 2026/09/14 11:45:25 by mruiz-ur         ###   ########.fr       */
+/*   Updated: 2026/09/17 12:14:37 by mruiz-ur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	parse_row(t_map *map, t_player *player, int i, int *player_found)
 			*player_found = 1;
 			player_start_pos(player, map, i, j);
 		}
-		else if (!is_valid_tile(map->grid[i][j]))
+		else if (map->grid[i][j] != '#' && !is_valid_tile(map->grid[i][j]))
 			return (print_error(ERR_MAP_CHAR), 1);
 		j++;
 	}
